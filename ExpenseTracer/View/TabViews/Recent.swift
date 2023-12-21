@@ -13,7 +13,9 @@ struct Recent: View {
     // view properties
     @State private var startDate:Date = .now.startOfMonth
     @State private var endDate:Date = .now.endOfMonth
-    
+    @State private var selectedCategory:Category = .expence
+    // for animaation ⚠️ ❓⚠️
+    @Namespace private var animation
     var body: some View {
         GeometryReader {
             // for animation purposes
@@ -30,7 +32,10 @@ struct Recent: View {
                                     .font(.caption2)
                                     .foregroundStyle(.gray)
                             }).hSpacing(.leading)
-                            // Card View 
+                            // Card View
+                            CardView(income: 200, expence: 300)
+                            // Custom Segmented Control
+                            CustomSegmentedControl()
                         }header: {
                             HeaderView(size)
                         }
@@ -38,7 +43,9 @@ struct Recent: View {
                     }
                     .padding(15)
                 }
+                .background(.gray.opacity(0.15))
             }
+            
         }
     }
     
@@ -89,6 +96,35 @@ struct Recent: View {
                 .padding(.horizontal, -15)
                 .padding(.top, -(safeArea.top + 15))
         }
+    }
+    
+    // Custom Segmented Control
+    func CustomSegmentedControl() -> some View {
+        HStack(spacing:0){
+            ForEach(Category.allCases, id:\.rawValue) { category in
+                Text(category.rawValue)
+                    .hSpacing()
+                    .padding(.vertical, 10)
+                    .background(){
+                        if category == selectedCategory {
+                            Capsule()
+                            // what is .background ⚠️ ❓⚠️
+                                .fill(.background)
+                                .shadow(radius: 10)
+                            // important Tip 😎 using matchGeometry to animate
+                                .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
+                        }
+                    }
+                    .contentShape(.capsule)
+                    .onTapGesture {
+                        withAnimation(.snappy){
+                            selectedCategory = category
+                        }
+                    }
+            }
+        }
+        .background(.gray.opacity(0.25), in: Capsule())
+        .padding(.top, 5)
     }
     
     func headerBGOpacity(_ proxy: GeometryProxy) -> CGFloat {
