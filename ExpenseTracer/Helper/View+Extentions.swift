@@ -28,4 +28,18 @@ extension View {
         }
         return .zero
     }
+    
+    func dateFormat(date:Date, format:String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        return dateFormatter.string(from: date)
+    }
+    
+    func currencyString(_ value:Double, alowedDigits: Int = 2) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .currency
+        numberFormatter.maximumFractionDigits = alowedDigits
+        
+        return numberFormatter.string(from: .init(value: value)) ?? "Unbale TO convert"
+    }
 }

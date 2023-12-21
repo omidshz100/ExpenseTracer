@@ -10,6 +10,9 @@ import SwiftUI
 struct Recent: View {
    // User Properties
     @AppStorage("USerName") var userName:String = "Omid"
+    // view properties
+    @State private var startDate:Date = .now.startOfMonth
+    @State private var endDate:Date = .now.endOfMonth
     
     var body: some View {
         GeometryReader {
@@ -18,9 +21,16 @@ struct Recent: View {
             NavigationStack{
                 ScrollView(.vertical){
                     LazyVStack(spacing:10, pinnedViews: [.sectionHeaders]){
-                        
                         Section{
-                            
+                            // Date Filter Button
+                            Button(action: {
+                                
+                            }, label: {
+                                Text("\(dateFormat(date: startDate , format: "dd - MM yy")) to \(dateFormat(date: endDate , format: "dd - MM yy"))")
+                                    .font(.caption2)
+                                    .foregroundStyle(.gray)
+                            }).hSpacing(.leading)
+                            // Card View 
                         }header: {
                             HeaderView(size)
                         }
@@ -66,7 +76,8 @@ struct Recent: View {
         }
         .padding(.bottom, userName.isEmpty ? 10:5)
         .background(){
-            VStack{
+            // fixed : when I see gap between two views
+            VStack(spacing:0){
                 Rectangle()
                     .fill(.ultraThinMaterial)
                 Divider()
@@ -80,12 +91,12 @@ struct Recent: View {
         }
     }
     
-    
     func headerBGOpacity(_ proxy: GeometryProxy) -> CGFloat {
         let minY = proxy.frame(in: .scrollView).minY + safeArea.top
         print(minY)
         return minY > 0 ? 0 : (-minY / 15)
     }
+    
     func headerScale(_ size:CGSize, proxy:GeometryProxy )->CGFloat {
         let minY = proxy.frame(in: .scrollView).minY
         let screenHeight = size.height

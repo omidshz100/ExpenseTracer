@@ -14,6 +14,8 @@
 		D95DA0C22B307AC4008A4E8D /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95DA0C12B307AC4008A4E8D /* IntroView.swift */; };
 		D95DA0C52B307DAB008A4E8D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95DA0C42B307DAB008A4E8D /* Constants.swift */; };
 		D95DA0C72B30819C008A4E8D /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95DA0C62B30819C008A4E8D /* Tab.swift */; };
+		D996D08F2B34477100EEFCE0 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D996D08E2B34477100EEFCE0 /* Date+Extension.swift */; };
+		D996D0922B344CC100EEFCE0 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D996D0912B344CC100EEFCE0 /* CardView.swift */; };
 		D9AC31F32B308AEA006F7973 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AC31F22B308AEA006F7973 /* Category.swift */; };
 		D9AC31F52B308B22006F7973 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AC31F42B308B22006F7973 /* Transaction.swift */; };
 		D9AC31F72B308C86006F7973 /* TintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AC31F62B308C86006F7973 /* TintColor.swift */; };
@@ -33,6 +35,8 @@
 		D95DA0C12B307AC4008A4E8D /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
 		D95DA0C42B307DAB008A4E8D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D95DA0C62B30819C008A4E8D /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
+		D996D08E2B34477100EEFCE0 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		D996D0912B344CC100EEFCE0 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		D9AC31F22B308AEA006F7973 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		D9AC31F42B308B22006F7973 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		D9AC31F62B308C86006F7973 /* TintColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintColor.swift; sourceTree = "<group>"; };
@@ -95,6 +99,7 @@
 		D95DA0BF2B307AB5008A4E8D /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D996D0902B344CB000EEFCE0 /* Helpers */,
 				D9AC31F82B30A3B0006F7973 /* TabViews */,
 				D95DA0C12B307AC4008A4E8D /* IntroView.swift */,
 			);
@@ -117,8 +122,17 @@
 			children = (
 				D95DA0C42B307DAB008A4E8D /* Constants.swift */,
 				D9AC32012B333049006F7973 /* View+Extentions.swift */,
+				D996D08E2B34477100EEFCE0 /* Date+Extension.swift */,
 			);
 			path = Helper;
+			sourceTree = "<group>";
+		};
+		D996D0902B344CB000EEFCE0 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				D996D0912B344CC100EEFCE0 /* CardView.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		D9AC31F82B30A3B0006F7973 /* TabViews */ = {
@@ -206,6 +220,7 @@
 				D9AC31F52B308B22006F7973 /* Transaction.swift in Sources */,
 				D95DA0B42B30792C008A4E8D /* ContentView.swift in Sources */,
 				D95DA0B22B30792C008A4E8D /* ExpenseTracerApp.swift in Sources */,
+				D996D0922B344CC100EEFCE0 /* CardView.swift in Sources */,
 				D95DA0C72B30819C008A4E8D /* Tab.swift in Sources */,
 				D95DA0C22B307AC4008A4E8D /* IntroView.swift in Sources */,
 				D9AC32002B30A3FD006F7973 /* Settings.swift in Sources */,
@@ -213,6 +228,7 @@
 				D9AC31FC2B30A3D2006F7973 /* Search.swift in Sources */,
 				D9AC31FA2B30A3C8006F7973 /* Recent.swift in Sources */,
 				D9AC32022B333049006F7973 /* View+Extentions.swift in Sources */,
+				D996D08F2B34477100EEFCE0 /* Date+Extension.swift in Sources */,
 				D9AC31FE2B30A3F1006F7973 /* Charts.swift in Sources */,
 				D9AC31F32B308AEA006F7973 /* Category.swift in Sources */,
 			);
