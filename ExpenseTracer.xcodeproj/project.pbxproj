@@ -16,6 +16,9 @@
 		D95DA0C72B30819C008A4E8D /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95DA0C62B30819C008A4E8D /* Tab.swift */; };
 		D996D08F2B34477100EEFCE0 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D996D08E2B34477100EEFCE0 /* Date+Extension.swift */; };
 		D996D0922B344CC100EEFCE0 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D996D0912B344CC100EEFCE0 /* CardView.swift */; };
+		D996D0942B34690F00EEFCE0 /* TransActionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D996D0932B34690F00EEFCE0 /* TransActionCardView.swift */; };
+		D996D0962B346E8200EEFCE0 /* SwipeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D996D0952B346E8200EEFCE0 /* SwipeAction.swift */; };
+		D996D0982B347FB500EEFCE0 /* DateFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D996D0972B347FB500EEFCE0 /* DateFilterView.swift */; };
 		D9AC31F32B308AEA006F7973 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AC31F22B308AEA006F7973 /* Category.swift */; };
 		D9AC31F52B308B22006F7973 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AC31F42B308B22006F7973 /* Transaction.swift */; };
 		D9AC31F72B308C86006F7973 /* TintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AC31F62B308C86006F7973 /* TintColor.swift */; };
@@ -37,6 +40,9 @@
 		D95DA0C62B30819C008A4E8D /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 		D996D08E2B34477100EEFCE0 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		D996D0912B344CC100EEFCE0 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		D996D0932B34690F00EEFCE0 /* TransActionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransActionCardView.swift; sourceTree = "<group>"; };
+		D996D0952B346E8200EEFCE0 /* SwipeAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeAction.swift; sourceTree = "<group>"; };
+		D996D0972B347FB500EEFCE0 /* DateFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFilterView.swift; sourceTree = "<group>"; };
 		D9AC31F22B308AEA006F7973 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		D9AC31F42B308B22006F7973 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		D9AC31F62B308C86006F7973 /* TintColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintColor.swift; sourceTree = "<group>"; };
@@ -130,7 +136,10 @@
 		D996D0902B344CB000EEFCE0 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				D996D0952B346E8200EEFCE0 /* SwipeAction.swift */,
 				D996D0912B344CC100EEFCE0 /* CardView.swift */,
+				D996D0932B34690F00EEFCE0 /* TransActionCardView.swift */,
+				D996D0972B347FB500EEFCE0 /* DateFilterView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -218,9 +227,11 @@
 			files = (
 				D9AC31F72B308C86006F7973 /* TintColor.swift in Sources */,
 				D9AC31F52B308B22006F7973 /* Transaction.swift in Sources */,
+				D996D0982B347FB500EEFCE0 /* DateFilterView.swift in Sources */,
 				D95DA0B42B30792C008A4E8D /* ContentView.swift in Sources */,
 				D95DA0B22B30792C008A4E8D /* ExpenseTracerApp.swift in Sources */,
 				D996D0922B344CC100EEFCE0 /* CardView.swift in Sources */,
+				D996D0962B346E8200EEFCE0 /* SwipeAction.swift in Sources */,
 				D95DA0C72B30819C008A4E8D /* Tab.swift in Sources */,
 				D95DA0C22B307AC4008A4E8D /* IntroView.swift in Sources */,
 				D9AC32002B30A3FD006F7973 /* Settings.swift in Sources */,
@@ -231,6 +242,7 @@
 				D996D08F2B34477100EEFCE0 /* Date+Extension.swift in Sources */,
 				D9AC31FE2B30A3F1006F7973 /* Charts.swift in Sources */,
 				D9AC31F32B308AEA006F7973 /* Category.swift in Sources */,
+				D996D0942B34690F00EEFCE0 /* TransActionCardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

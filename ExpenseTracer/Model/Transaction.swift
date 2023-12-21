@@ -14,13 +14,12 @@ struct Transaction: Identifiable {
     // properties
     var title:String
     var remark:String
-    var amount:String
-    var dateAdded:String
+    var amount:Double
+    var dateAdded:Date
     var category:String
     var tintColor:String
     
-    init(id: UUID, title: String, remark: String, amount: String, dateAdded: String, category: Category, tintColor: TintColor) {
-        self.id = id
+    init(title: String, remark: String, amount: Double, dateAdded: Date, category: Category, tintColor: TintColor) {
         self.title = title
         self.remark = remark
         self.amount = amount
@@ -38,5 +37,10 @@ struct Transaction: Identifiable {
 
 // Sample Transactions for UI building
 var sampleTransActions:[Transaction] = [
-    
+    Transaction( title: "MurtZilo", remark: "Food and Drinks", amount: 3.00, dateAdded: .now, category: .expence, tintColor: tints.randomElement()!),
+    Transaction(title: "HeadPhone", remark: "Amazon", amount: 3.00, dateAdded: .now, category: .expence, tintColor: tints.randomElement()!),
+    Transaction(title: "Printer", remark: "Ebay", amount: 3.00, dateAdded: .now, category: .expence, tintColor: tints.randomElement()!),
+    Transaction(title: "Monthly Incom", remark: "Salary", amount: 3.00, dateAdded: .now, category: .income, tintColor: tints.randomElement()!),
+    Transaction(title: "MacBook", remark: "Apple", amount: 3.00, dateAdded: .now, category: .expence, tintColor: tints.randomElement()!),
+    Transaction(title: "Refund", remark: "iO Resume", amount: 3.00, dateAdded: .now, category: .expence, tintColor: tints.randomElement()!),
 ]

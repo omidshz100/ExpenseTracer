@@ -14,6 +14,7 @@ struct Recent: View {
     @State private var startDate:Date = .now.startOfMonth
     @State private var endDate:Date = .now.endOfMonth
     @State private var selectedCategory:Category = .expence
+    @State private var showFilterView:Bool = false
     // for animaation ⚠️ ❓⚠️
     @Namespace private var animation
     var body: some View {
@@ -22,11 +23,12 @@ struct Recent: View {
             let size = $0.size
             NavigationStack{
                 ScrollView(.vertical){
+                    // using LazyVStack ⚠️ ❓⚠️
                     LazyVStack(spacing:10, pinnedViews: [.sectionHeaders]){
                         Section{
                             // Date Filter Button
                             Button(action: {
-                                
+                                showFilterView.toggle()
                             }, label: {
                                 Text("\(dateFormat(date: startDate , format: "dd - MM yy")) to \(dateFormat(date: endDate , format: "dd - MM yy"))")
                                     .font(.caption2)
@@ -36,6 +38,11 @@ struct Recent: View {
                             CardView(income: 200, expence: 300)
                             // Custom Segmented Control
                             CustomSegmentedControl()
+                                .padding(.bottom, 10)
+                            // Using * filter * for list to seprate items in two sections ( income or Expense ) ⚠️😎
+                            ForEach(sampleTransActions.filter({$0.category == selectedCategory.rawValue })){ transaction in
+                                TransActionCardView(transAction: transaction)
+                            }
                         }header: {
                             HeaderView(size)
                         }
@@ -44,8 +51,23 @@ struct Recent: View {
                     .padding(15)
                 }
                 .background(.gray.opacity(0.15))
+                .blur(radius: showFilterView ? 5:0)
+                .disabled(showFilterView)
             }
-            
+            .overlay {
+                    if showFilterView {
+                        DateFilterView(start: startDate, end: endDate, onSubmit: { start, end in
+                            startDate = start
+                            endDate = end
+                            showFilterView = false
+                        }, onClose: {
+                            showFilterView = false
+                        })
+                            .transition(.move(edge: .leading))
+                    }
+            }
+            // با یه جایه جایی از ز استک به اوورلی کلی در انیمیشن ها تغییر ایجاد کرد
+            .animation(.snappy, value: showFilterView)
         }
     }
     
