@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D90F33832B3B25A3007AB4E3 /* NewExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90F33822B3B25A3007AB4E3 /* NewExpenseView.swift */; };
 		D95DA0B22B30792C008A4E8D /* ExpenseTracerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95DA0B12B30792C008A4E8D /* ExpenseTracerApp.swift */; };
 		D95DA0B42B30792C008A4E8D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95DA0B32B30792C008A4E8D /* ContentView.swift */; };
 		D95DA0B62B30792D008A4E8D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D95DA0B52B30792D008A4E8D /* Assets.xcassets */; };
@@ -31,6 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D90F33822B3B25A3007AB4E3 /* NewExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewExpenseView.swift; sourceTree = "<group>"; };
 		D95DA0AE2B30792C008A4E8D /* ExpenseTracer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExpenseTracer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D95DA0B12B30792C008A4E8D /* ExpenseTracerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseTracerApp.swift; sourceTree = "<group>"; };
 		D95DA0B32B30792C008A4E8D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				D996D0902B344CB000EEFCE0 /* Helpers */,
 				D9AC31F82B30A3B0006F7973 /* TabViews */,
 				D95DA0C12B307AC4008A4E8D /* IntroView.swift */,
+				D90F33822B3B25A3007AB4E3 /* NewExpenseView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -236,6 +239,7 @@
 				D996D0922B344CC100EEFCE0 /* CardView.swift in Sources */,
 				D996D0962B346E8200EEFCE0 /* SwipeAction.swift in Sources */,
 				D95DA0C72B30819C008A4E8D /* Tab.swift in Sources */,
+				D90F33832B3B25A3007AB4E3 /* NewExpenseView.swift in Sources */,
 				D95DA0C22B307AC4008A4E8D /* IntroView.swift in Sources */,
 				D9AC32002B30A3FD006F7973 /* Settings.swift in Sources */,
 				D95DA0C52B307DAB008A4E8D /* Constants.swift in Sources */,

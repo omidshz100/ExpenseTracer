@@ -92,7 +92,7 @@ struct Recent: View {
             
             Spacer(minLength: 0)
             NavigationLink{
-                
+                NewExpenseView()
             }label: {
                 Image(systemName: "plus")
                     .font(.title3)
