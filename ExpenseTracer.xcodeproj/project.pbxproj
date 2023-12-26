@@ -19,6 +19,7 @@
 		D996D0942B34690F00EEFCE0 /* TransActionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D996D0932B34690F00EEFCE0 /* TransActionCardView.swift */; };
 		D996D0962B346E8200EEFCE0 /* SwipeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D996D0952B346E8200EEFCE0 /* SwipeAction.swift */; };
 		D996D0982B347FB500EEFCE0 /* DateFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D996D0972B347FB500EEFCE0 /* DateFilterView.swift */; };
+		D996D09A2B3AE8BB00EEFCE0 /* LockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D996D0992B3AE8BB00EEFCE0 /* LockView.swift */; };
 		D9AC31F32B308AEA006F7973 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AC31F22B308AEA006F7973 /* Category.swift */; };
 		D9AC31F52B308B22006F7973 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AC31F42B308B22006F7973 /* Transaction.swift */; };
 		D9AC31F72B308C86006F7973 /* TintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AC31F62B308C86006F7973 /* TintColor.swift */; };
@@ -43,6 +44,7 @@
 		D996D0932B34690F00EEFCE0 /* TransActionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransActionCardView.swift; sourceTree = "<group>"; };
 		D996D0952B346E8200EEFCE0 /* SwipeAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeAction.swift; sourceTree = "<group>"; };
 		D996D0972B347FB500EEFCE0 /* DateFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFilterView.swift; sourceTree = "<group>"; };
+		D996D0992B3AE8BB00EEFCE0 /* LockView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockView.swift; sourceTree = "<group>"; };
 		D9AC31F22B308AEA006F7973 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		D9AC31F42B308B22006F7973 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		D9AC31F62B308C86006F7973 /* TintColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintColor.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 		D9AC31F82B30A3B0006F7973 /* TabViews */ = {
 			isa = PBXGroup;
 			children = (
+				D996D0992B3AE8BB00EEFCE0 /* LockView.swift */,
 				D9AC31F92B30A3C8006F7973 /* Recent.swift */,
 				D9AC31FB2B30A3D2006F7973 /* Search.swift */,
 				D9AC31FD2B30A3F1006F7973 /* Charts.swift */,
@@ -239,6 +242,7 @@
 				D9AC31FC2B30A3D2006F7973 /* Search.swift in Sources */,
 				D9AC31FA2B30A3C8006F7973 /* Recent.swift in Sources */,
 				D9AC32022B333049006F7973 /* View+Extentions.swift in Sources */,
+				D996D09A2B3AE8BB00EEFCE0 /* LockView.swift in Sources */,
 				D996D08F2B34477100EEFCE0 /* Date+Extension.swift in Sources */,
 				D9AC31FE2B30A3F1006F7973 /* Charts.swift in Sources */,
 				D9AC31F32B308AEA006F7973 /* Category.swift in Sources */,
@@ -379,6 +383,7 @@
 				DEVELOPMENT_TEAM = 4C34TC26X4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "We need your pesmission to unlock your app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -408,6 +413,7 @@
 				DEVELOPMENT_TEAM = 4C34TC26X4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "We need your pesmission to unlock your app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

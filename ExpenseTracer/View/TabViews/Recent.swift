@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Recent: View {
    // User Properties
-    @AppStorage("USerName") var userName:String = "Omid"
+    @AppStorage("userName") var userName:String = "Omid"
     // view properties
     @State private var startDate:Date = .now.startOfMonth
     @State private var endDate:Date = .now.endOfMonth
