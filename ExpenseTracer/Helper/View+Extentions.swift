@@ -42,4 +42,11 @@ extension View {
         
         return numberFormatter.string(from: .init(value: value)) ?? "Unbale TO convert"
     }
+    
+    var currencySymbol: String {
+        let local = Locale.current
+        
+        
+        return local.currencySymbol ?? ""
+    }
 }

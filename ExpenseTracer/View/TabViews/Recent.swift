@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct Recent: View {
    // User Properties
@@ -17,6 +18,7 @@ struct Recent: View {
     @State private var showFilterView:Bool = false
     // for animaation ⚠️ ❓⚠️
     @Namespace private var animation
+    @Query(sort: [SortDescriptor(\Transaction.dateAdded, order: .reverse)], animation: .snappy) private var transactions:[Transaction]
     var body: some View {
         GeometryReader {
             // for animation purposes
@@ -40,9 +42,16 @@ struct Recent: View {
                             CustomSegmentedControl()
                                 .padding(.bottom, 10)
                             // Using * filter * for list to seprate items in two sections ( income or Expense ) ⚠️😎
-                            ForEach(sampleTransActions.filter({$0.category == selectedCategory.rawValue })){ transaction in
-                                TransActionCardView(transAction: transaction)
+//                            ForEach(sampleTransActions.filter({$0.category == selectedCategory.rawValue })){ transaction in
+//                                TransActionCardView(transAction: transaction)
+//                            }
+                            
+                            ForEach(transactions.filter({$0.category == selectedCategory.rawValue })){ transaction in
+                                NavigationLink(destination: NewExpenseView(editTransAction: transaction)) {
+                                    TransActionCardView(transAction: transaction)
+                                }
                             }
+                            
                         }header: {
                             HeaderView(size)
                         }

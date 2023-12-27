@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TransActionCardView: View {
     var transAction:Transaction
-    
+    @Environment(\.modelContext) private var context
     var body: some View {
         SwipeAction(cornerRadius: 10, direction: .trailing) {
             HStack(spacing:10){
@@ -36,8 +36,16 @@ struct TransActionCardView: View {
                 .lineLimit(1)
                 .hSpacing(.leading)
                 
-                Text(currencyString( transAction.amount, alowedDigits: 2))
-                    .fontWeight(.semibold)
+                if transAction.category == Category.expence.rawValue {
+                    Text(currencyString( transAction.amount, alowedDigits: 2))
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.red)
+                }else{
+                    Text(currencyString( transAction.amount, alowedDigits: 2))
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.green)
+                }
+                
             }
             .padding(.horizontal, 15)
             .padding(.vertical, 10)
@@ -45,7 +53,7 @@ struct TransActionCardView: View {
         } actions: {
             Action(tint: .red, icon: "trash"){
                 // TO DO LATER ....
-                print("Item removed .... ")
+                context.delete(transAction)
             }
             
         }
@@ -53,5 +61,6 @@ struct TransActionCardView: View {
 }
 
 #Preview {
-    TransActionCardView(transAction: sampleTransActions[0])
+    //TransActionCardView(transAction: sampleTransActions[0])
+    ContentView()
 }

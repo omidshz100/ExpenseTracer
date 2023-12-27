@@ -7,10 +7,10 @@
 
 import Foundation
 import SwiftUI
+import SwiftData
 
-
-struct Transaction: Identifiable {
-    var id:UUID = UUID()
+@Model
+class Transaction{
     // properties
     var title:String
     var remark:String
@@ -28,19 +28,18 @@ struct Transaction: Identifiable {
         self.tintColor = tintColor.color
     }
 
+    
     // Extracting color value from tintColor String
+    @Transient
     var color:Color {
         return tints.first(where: {$0.color == tintColor})?.value ?? appTint
     }
+    @Transient
+    var rawCategory:Category? {
+        return Category.allCases.first(where: { category == $0.rawValue})
+    }
+    @Transient
+    var tint:TintColor? {
+        return tints.first(where: {$0.color == tintColor})
+    }
 }
-
-
-// Sample Transactions for UI building
-var sampleTransActions:[Transaction] = [
-    Transaction( title: "MurtZilo", remark: "Food and Drinks", amount: 3.00, dateAdded: .now, category: .expence, tintColor: tints.randomElement()!),
-    Transaction(title: "HeadPhone", remark: "Amazon", amount: 3.00, dateAdded: .now, category: .expence, tintColor: tints.randomElement()!),
-    Transaction(title: "Printer", remark: "Ebay", amount: 3.00, dateAdded: .now, category: .expence, tintColor: tints.randomElement()!),
-    Transaction(title: "Monthly Incom", remark: "Salary", amount: 3.00, dateAdded: .now, category: .income, tintColor: tints.randomElement()!),
-    Transaction(title: "MacBook", remark: "Apple", amount: 3.00, dateAdded: .now, category: .expence, tintColor: tints.randomElement()!),
-    Transaction(title: "Refund", remark: "iO Resume", amount: 3.00, dateAdded: .now, category: .expence, tintColor: tints.randomElement()!),
-]
