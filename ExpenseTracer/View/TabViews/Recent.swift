@@ -37,7 +37,7 @@ struct Recent: View {
                                     .foregroundStyle(.gray)
                             }).hSpacing(.leading)
                             // Card View
-                            CardView(income: 200, expence: 300)
+                            CardView(income: sumTransActions(transactions.filter({$0.category == Category.income.rawValue})), expence: sumTransActions(transactions.filter({$0.category == Category.expence.rawValue})))
                             // Custom Segmented Control
                             CustomSegmentedControl()
                                 .padding(.bottom, 10)
@@ -80,6 +80,13 @@ struct Recent: View {
         }
     }
     
+    func sumTransActions( _ transActions:[Transaction]) -> Double{
+        var total:Double = 0.0
+        for item in transactions {
+            total += item.amount
+        }
+        return total
+    }
     @ViewBuilder
     func HeaderView(_ size:CGSize)-> some View {
         
