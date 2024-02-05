@@ -2,7 +2,7 @@
 
 ![App Preview](https://example.com/path/to/your/image.gif)
 
-ExpenseTracer is a mobile app designed to help users track and manage their expenses efficiently. This project is built using [Technology/Framework], and it provides [key features/benefits].
+ExpenseTracer is a mobile app designed to help users track and manage their expenses efficiently. This project is built using Swift, SwiftUI, and it provides a Database of any purchase the user made and charts to make sense.
 
 ## Table of Contents
 
