@@ -4,6 +4,8 @@
 //
 //  Created by Balaji Venkatesh on 19/10/23.
 //
+//
+
 
 import SwiftUI
 import LocalAuthentication
@@ -94,8 +96,9 @@ struct LockView<Content: View>: View {
                 isUnlocked = false
                 pin = ""
             }
+            
             if newValue == .active && !isUnlocked && isEnabled {
-                unlockView() 
+                unlockView()
             }
         }
     }

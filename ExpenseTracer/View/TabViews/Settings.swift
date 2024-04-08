@@ -6,31 +6,30 @@
 //
 
 import SwiftUI
-//
-struct Settings: View {
-    //User properties
-    @AppStorage("userName") private var userName:String = ""
-    // App lock properties
-    @AppStorage("isAppLockEnabled") private var isAppLockEnabled:Bool = false
-    @AppStorage("lockeWhenAppGoesBackground") private var lockeWhenAppGoesBackground:Bool = false
 
+struct Settings: View {
+    /// User Properties
+    @AppStorage("userName") private var userName: String = ""
+    /// App Lock Properties
+    @AppStorage("isAppLockEnabled") private var isAppLockEnabled: Bool = false
+    @AppStorage("lockWhenAppGoesBackground") private var lockWhenAppGoesBackground: Bool = false
     var body: some View {
-        NavigationStack{
-            List{
-                Section("User Name"){
-                    TextField("iJustin", text: $userName)
+        NavigationStack {
+            List {
+                Section("User Name") {
+                    TextField("iJustine", text: $userName)
                 }
                 
-                Section("App Lock"){
+                Section("App Lock") {
                     Toggle("Enable App Lock", isOn: $isAppLockEnabled)
                     
                     if isAppLockEnabled {
-                        Toggle("locke When App Goes Background", isOn: $lockeWhenAppGoesBackground)
+                        Toggle("Lock When App Goes Background", isOn: $lockWhenAppGoesBackground)
                     }
                 }
             }
+            .navigationTitle("Settings")
         }
-        .navigationTitle("Settings ")
     }
 }
 

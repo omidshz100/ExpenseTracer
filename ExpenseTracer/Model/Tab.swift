@@ -5,19 +5,18 @@
 //  Created by Omid Shojaeian Zanjani on 18/12/23.
 //
 
-import Foundation
 import SwiftUI
 
-enum Tab:String {
-    case recent = "Recent"
-    case search = "Search"
+enum Tab: String {
+    case recents = "Recents"
+    case search = "Filter"
     case charts = "Charts"
     case settings = "Settings"
     
     @ViewBuilder
     var tabContent: some View {
         switch self {
-        case .recent:
+        case .recents:
             Image(systemName: "calendar")
             Text(self.rawValue)
         case .search:
@@ -27,10 +26,8 @@ enum Tab:String {
             Image(systemName: "chart.bar.xaxis")
             Text(self.rawValue)
         case .settings:
-            Image(systemName: "gear")
+            Image(systemName: "gearshape")
             Text(self.rawValue)
         }
     }
 }
-
-

@@ -8,45 +8,38 @@
 import SwiftUI
 
 struct ContentView: View {
-    // visibility status
-    @AppStorage("first-time") private var isFirstTime:Bool = true
-    // Active Tab
-    @State private var activeTab:Tab = .recent
-    // App lock properties
-    @AppStorage("isAppLockEnabled") private var isAppLockEnabled:Bool = false
-    @AppStorage("lockeWhenAppGoesBackground") private var lockeWhenAppGoesBackground:Bool = false
+    /// Intro Visibility Status
+    @AppStorage("isFirstTime") private var isFirstTime: Bool = true
+    /// App Lock Properties
+    @AppStorage("isAppLockEnabled") private var isAppLockEnabled: Bool = false
+    @AppStorage("lockWhenAppGoesBackground") private var lockWhenAppGoesBackground: Bool = false
+    /// Active Tab
+    @State private var activeTab: Tab = .recents
     var body: some View {
-        LockView(lockType: .biometric, lockPin: "", isEnabled: isAppLockEnabled, lockWhenAppGoesBackground: lockeWhenAppGoesBackground){
-            TabView(selection: $activeTab )
-            {
-                Recent()
-                    .tag(Tab.recent)
-                    .tabItem {
-                        Tab.recent.tabContent
-                    }
+        LockView(lockType: .biometric, lockPin: "", isEnabled: isAppLockEnabled, lockWhenAppGoesBackground: lockWhenAppGoesBackground) {
+            TabView(selection: $activeTab) {
+                Recents()
+                    .tag(Tab.recents)
+                    .tabItem { Tab.recents.tabContent }
+                
                 Search()
                     .tag(Tab.search)
-                    .tabItem {
-                        Tab.search.tabContent
-                    }
-                Charts()
+                    .tabItem { Tab.search.tabContent }
+                
+                Graphs()
                     .tag(Tab.charts)
-                    .tabItem {
-                        Tab.charts.tabContent
-                    }
+                    .tabItem { Tab.charts.tabContent }
+                
                 Settings()
                     .tag(Tab.settings)
-                    .tabItem {
-                        Tab.settings.tabContent
-                    }
+                    .tabItem { Tab.settings.tabContent }
             }
             .tint(appTint)
             .sheet(isPresented: $isFirstTime, content: {
-                IntroView()
+                IntroScreen()
                     .interactiveDismissDisabled()
             })
         }
-        
     }
 }
 

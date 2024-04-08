@@ -2,7 +2,7 @@
 //  SwipeAction.swift
 //  CustomSwipeActions
 //
-//  Created by Balaji Venkatesh on 19/11/23.
+//  Created by Omid Shojaeian on 19/11/23.
 //
 
 import SwiftUI

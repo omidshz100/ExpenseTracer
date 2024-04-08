@@ -6,61 +6,61 @@
 //
 
 import SwiftUI
+import WidgetKit
 
-struct TransActionCardView: View {
-    var transAction:Transaction
+struct TransactionCardView: View {
     @Environment(\.modelContext) private var context
+    var transaction: Transaction
+    var showsCategory: Bool = false
     var body: some View {
         SwipeAction(cornerRadius: 10, direction: .trailing) {
-            HStack(spacing:10){
-                Text("\(String(transAction.title.prefix(1)))")
+            HStack(spacing: 12) {
+                Text("\(String(transaction.title.prefix(1)))")
                     .font(.title)
                     .fontWeight(.semibold)
                     .foregroundStyle(.white)
                     .frame(width: 45, height: 45)
-                // 😎 you can use " in: Circle() " in bacground to shape the background
-                    .background(transAction.color.gradient, in: Circle())
+                    .background(transaction.color.gradient, in: .circle)
                 
-                VStack(alignment: .leading, spacing:4){
-                    Text("\(transAction.title)")
+                VStack(alignment: .leading, spacing: 4, content: {
+                    Text(transaction.title)
                         .foregroundStyle(Color.primary)
                     
-                    Text("\(transAction.remark)")
+                    Text(transaction.remarks)
+                        .font(.caption)
                         .foregroundStyle(Color.primary.secondary)
                     
-                    Text("\(dateFormat(date:transAction.dateAdded,format: "dd MMM yyyy"))")
+                    Text(format(date: transaction.dateAdded, format: "dd MMM yyyy"))
                         .font(.caption2)
                         .foregroundStyle(.gray)
-                }
-                // ❓⚠️ what is " lineLimit "
+                    
+                    if showsCategory {
+                        Text(transaction.category)
+                            .font(.caption2)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 2)
+                            .foregroundStyle(.white)
+                            .background(transaction.category == Category.income.rawValue ? Color.green.gradient : Color.red.gradient, in: .capsule)
+                    }
+                })
                 .lineLimit(1)
                 .hSpacing(.leading)
                 
-                if transAction.category == Category.expence.rawValue {
-                    Text(currencyString( transAction.amount, alowedDigits: 2))
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.red)
-                }else{
-                    Text(currencyString( transAction.amount, alowedDigits: 2))
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.green)
-                }
-                
+                Text(currencyString(transaction.amount, allowedDigits: 2))
+                    .fontWeight(.semibold)
             }
             .padding(.horizontal, 15)
             .padding(.vertical, 10)
             .background(.background, in: .rect(cornerRadius: 10))
         } actions: {
-            Action(tint: .red, icon: "trash"){
-                // TO DO LATER ....
-                context.delete(transAction)
+            Action(tint: .red, icon: "trash") {
+                context.delete(transaction)
+                WidgetCenter.shared.reloadAllTimelines()
             }
-            
         }
     }
 }
 
 #Preview {
-    //TransActionCardView(transAction: sampleTransActions[0])
     ContentView()
 }
