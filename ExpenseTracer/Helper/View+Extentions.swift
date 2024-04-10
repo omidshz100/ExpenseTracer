@@ -11,13 +11,13 @@ import SwiftUI
 
 extension View {
     @ViewBuilder
-    func hSpacing(_ alignment: Alignment = .center) -> some View {
+    func hSpacingForView(_ alignment: Alignment = .center) -> some View {
         self
         .frame(maxWidth: .infinity, alignment: alignment)
     }
     
     @ViewBuilder
-    func vSpacing(_ alignment: Alignment = .center) -> some View {
+    func vSpacingForView(_ alignment: Alignment = .center) -> some View {
         self
         .frame(maxHeight: .infinity, alignment: alignment)
     }
@@ -37,7 +37,7 @@ extension View {
         return formatter.string(from: date)
     }
     
-    func currencyString(_ value: Double, allowedDigits: Int = 2) -> String {
+    func currencyStringGenerator(_ value: Double, allowedDigits: Int = 2) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.maximumFractionDigits = allowedDigits
@@ -51,7 +51,7 @@ extension View {
         return locale.currencySymbol ?? ""
     }
     
-    func total(_ transactions: [Transaction], category: Category) -> Double {
+    func totalCalculator(_ transactions: [TransactionModel], category: CategoryItem) -> Double {
         return transactions.filter({ $0.category == category.rawValue }).reduce(Double.zero) { partialResult, transaction in
             return partialResult + transaction.amount
         }

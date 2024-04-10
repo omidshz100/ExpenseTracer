@@ -10,7 +10,7 @@ import WidgetKit
 
 struct TransactionCardView: View {
     @Environment(\.modelContext) private var context
-    var transaction: Transaction
+    var transaction: TransactionModel
     var showsCategory: Bool = false
     var body: some View {
         SwipeAction(cornerRadius: 10, direction: .trailing) {
@@ -40,13 +40,13 @@ struct TransactionCardView: View {
                             .padding(.horizontal, 8)
                             .padding(.vertical, 2)
                             .foregroundStyle(.white)
-                            .background(transaction.category == Category.income.rawValue ? Color.green.gradient : Color.red.gradient, in: .capsule)
+                            .background(transaction.category == CategoryItem.income.rawValue ? Color.green.gradient : Color.red.gradient, in: .capsule)
                     }
                 })
                 .lineLimit(1)
-                .hSpacing(.leading)
+                .hSpacingForView(.leading)
                 
-                Text(currencyString(transaction.amount, allowedDigits: 2))
+                Text(currencyStringGenerator(transaction.amount, allowedDigits: 2))
                     .fontWeight(.semibold)
             }
             .padding(.horizontal, 15)

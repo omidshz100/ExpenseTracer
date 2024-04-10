@@ -20,5 +20,5 @@ struct ChartGroup: Identifiable {
 struct ChartCategory: Identifiable {
     let id: UUID = .init()
     var totalValue: Double
-    var category: Category
+    var category: CategoryItem
 }

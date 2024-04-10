@@ -9,5 +9,5 @@ import Foundation
 import SwiftUI
 
 
-let appTint: Color = .red
+let appTintCustom: Color = .red
 

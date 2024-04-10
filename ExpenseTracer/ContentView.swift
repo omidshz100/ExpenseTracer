@@ -14,29 +14,29 @@ struct ContentView: View {
     @AppStorage("isAppLockEnabled") private var isAppLockEnabled: Bool = false
     @AppStorage("lockWhenAppGoesBackground") private var lockWhenAppGoesBackground: Bool = false
     /// Active Tab
-    @State private var activeTab: Tab = .recents
+    @State private var activeTab: TabItem = .recents
     var body: some View {
         LockView(lockType: .biometric, lockPin: "", isEnabled: isAppLockEnabled, lockWhenAppGoesBackground: lockWhenAppGoesBackground) {
             TabView(selection: $activeTab) {
-                Recents()
-                    .tag(Tab.recents)
-                    .tabItem { Tab.recents.tabContent }
+                RecentTransactions()
+                    .tag(TabItem.recents)
+                    .tabItem { TabItem.recents.tabContent }
                 
-                Search()
-                    .tag(Tab.search)
-                    .tabItem { Tab.search.tabContent }
+                SearchAmongTransActions()
+                    .tag(TabItem.search)
+                    .tabItem { TabItem.search.tabContent }
                 
-                Graphs()
-                    .tag(Tab.charts)
-                    .tabItem { Tab.charts.tabContent }
+                GraphForTransactions()
+                    .tag(TabItem.charts)
+                    .tabItem { TabItem.charts.tabContent }
                 
-                Settings()
-                    .tag(Tab.settings)
-                    .tabItem { Tab.settings.tabContent }
+                ApplicationSettings()
+                    .tag(TabItem.settings)
+                    .tabItem { TabItem.settings.tabContent }
             }
-            .tint(appTint)
+            .tint(appTintCustom)
             .sheet(isPresented: $isFirstTime, content: {
-                IntroScreen()
+                SplashScreen()
                     .interactiveDismissDisabled()
             })
         }

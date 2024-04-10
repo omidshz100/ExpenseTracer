@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct IntroScreen: View {
+struct SplashScreen: View {
     /// Visibility Status
     @AppStorage("isFirstTime") private var isFirstTime: Bool = true
     var body: some View {
@@ -39,7 +39,7 @@ struct IntroScreen: View {
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
-                    .background(appTint.gradient, in: .rect(cornerRadius: 12))
+                    .background(appTintCustom.gradient, in: .rect(cornerRadius: 12))
                     .contentShape(.rect)
             })
         }
@@ -52,7 +52,7 @@ struct IntroScreen: View {
         HStack(spacing: 20) {
             Image(systemName: symbol)
                 .font(.largeTitle)
-                .foregroundStyle(appTint.gradient)
+                .foregroundStyle(appTintCustom.gradient)
                 .frame(width: 45)
             
             VStack(alignment: .leading, spacing: 6, content: {
@@ -69,5 +69,5 @@ struct IntroScreen: View {
 }
 
 #Preview {
-    IntroScreen()
+    SplashScreen()
 }

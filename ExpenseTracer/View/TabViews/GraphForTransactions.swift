@@ -10,9 +10,15 @@ import SwiftUI
 import Charts
 import SwiftData
 
-struct Graphs: View {
+
+struct GraphForTransactions: View {
+    
+    
     /// View Properties
-    @Query(animation: .snappy) private var transactions: [Transaction]
+    @Query(animation: .snappy) private var transactions: [TransactionModel]
+    
+    
+    
     @State private var chartGroups: [ChartGroup] = []
     var body: some View {
         NavigationStack {
@@ -30,7 +36,7 @@ struct Graphs: View {
                             Text(format(date: group.date, format: "MMM yy"))
                                 .font(.caption)
                                 .foregroundStyle(.gray)
-                                .hSpacing(.leading)
+                                .hSpacingForView(.leading)
                             
                             NavigationLink {
                                 ListOfExpenses(month: group.date)
@@ -112,11 +118,11 @@ struct Graphs: View {
             
             let chartGroups = sortedGroups.compactMap { dict -> ChartGroup? in
                 let date = calendar.date(from: dict.key) ?? .init()
-                let income = dict.value.filter({ $0.category == Category.income.rawValue })
-                let expense = dict.value.filter({ $0.category == Category.expense.rawValue })
+                let income = dict.value.filter({ $0.category == CategoryItem.income.rawValue })
+                let expense = dict.value.filter({ $0.category == CategoryItem.expense.rawValue })
                 
-                let incomeTotalValue = total(income, category: .income)
-                let expenseTotalValue = total(expense, category: .expense)
+                let incomeTotalValue = totalCalculator(income, category: .income)
+                let expenseTotalValue = totalCalculator(expense, category: .expense)
                 
                 return .init(
                     date: date,
@@ -154,7 +160,7 @@ struct ListOfExpenses: View {
                     FilterTransactionsView(startDate: month.startOfMonth, endDate: month.endOfMonth, category: .income) { transactions in
                         ForEach(transactions) { transaction in
                             NavigationLink {
-                                TransactionView(editTransaction: transaction)
+                                TransactionIncomeExpenseView(editTransaction: transaction)
                             } label: {
                                 TransactionCardView(transaction: transaction)
                             }
@@ -165,14 +171,14 @@ struct ListOfExpenses: View {
                     Text("Income")
                         .font(.caption)
                         .foregroundStyle(.gray)
-                        .hSpacing(.leading)
+                        .hSpacingForView(.leading)
                 }
                 
                 Section {
                     FilterTransactionsView(startDate: month.startOfMonth, endDate: month.endOfMonth, category: .expense) { transactions in
                         ForEach(transactions) { transaction in
                             NavigationLink {
-                                TransactionView(editTransaction: transaction)
+                                TransactionIncomeExpenseView(editTransaction: transaction)
                             } label: {
                                 TransactionCardView(transaction: transaction)
                             }
@@ -183,7 +189,7 @@ struct ListOfExpenses: View {
                     Text("Expense")
                         .font(.caption)
                         .foregroundStyle(.gray)
-                        .hSpacing(.leading)
+                        .hSpacingForView(.leading)
                 }
             }
             .padding(15)
@@ -194,5 +200,5 @@ struct ListOfExpenses: View {
 }
 
 #Preview {
-    Graphs()
+    GraphForTransactions()
 }

@@ -39,8 +39,8 @@ struct StatsCardViewEntryView : View {
     var body: some View {
         FilterTransactionsView(startDate: .now.startOfMonth, endDate: .now.endOfMonth) { transcations in
             CardView(
-                income: total(transcations, category: .income),
-                expense: total(transcations, category: .expense)
+                income: totalCalculator(transcations, category: .income),
+                expense: totalCalculator(transcations, category: .expense)
             )
         }
     }
@@ -53,7 +53,7 @@ struct StatsCardView: Widget {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             StatsCardViewEntryView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
-                .modelContainer(for: Transaction.self)
+                .modelContainer(for: TransactionModel.self)
         }
         .supportedFamilies([.systemMedium])
         .contentMarginsDisabled()

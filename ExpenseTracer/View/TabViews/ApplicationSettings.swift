@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Settings: View {
+struct ApplicationSettings: View {
     /// User Properties
     @AppStorage("userName") private var userName: String = ""
     /// App Lock Properties

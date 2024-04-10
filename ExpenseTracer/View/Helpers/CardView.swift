@@ -17,7 +17,7 @@ struct CardView: View {
             
             VStack(spacing: 0) {
                 HStack(spacing: 12) {
-                    Text("\(currencyString(income - expense))")
+                    Text("\(currencyStringGenerator(income - expense))")
                         .font(.title.bold())
                         .foregroundStyle(Color.primary)
                     
@@ -28,7 +28,7 @@ struct CardView: View {
                 .padding(.bottom, 25)
                 
                 HStack(spacing: 0) {
-                    ForEach(Category.allCases, id: \.rawValue) { category in
+                    ForEach(CategoryItem.allCases, id: \.rawValue) { category in
                         let symbolImage = category == .income ? "arrow.down" : "arrow.up"
                         let tint = category == .income ? Color.green : Color.red
                         
@@ -47,7 +47,7 @@ struct CardView: View {
                                     .font(.caption2)
                                     .foregroundStyle(.gray)
                                 
-                                Text(currencyString(category == .income ? income : expense, allowedDigits: 0))
+                                Text(currencyStringGenerator(category == .income ? income : expense, allowedDigits: 0))
                                     .font(.callout)
                                     .fontWeight(.semibold)
                                     .foregroundStyle(Color.primary)

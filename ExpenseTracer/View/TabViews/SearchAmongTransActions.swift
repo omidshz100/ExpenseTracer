@@ -8,11 +8,11 @@
 import SwiftUI
 import Combine
 
-struct Search: View {
+struct SearchAmongTransActions: View {
     /// View Properties
     @State private var searchText: String = ""
     @State private var filterText: String = ""
-    @State private var selectedCategory: Category? = nil
+    @State private var selectedCategory: CategoryItem? = nil
     let searchPublisher = PassthroughSubject<String, Never>()
     var body: some View {
         NavigationStack {
@@ -21,7 +21,7 @@ struct Search: View {
                     FilterTransactionsView(category: selectedCategory, searchText: filterText) { transactions in
                         ForEach(transactions) { transaction in
                             NavigationLink {
-                                TransactionView(editTransaction: transaction)
+                                TransactionIncomeExpenseView(editTransaction: transaction)
                             } label: {
                                 TransactionCardView(transaction: transaction, showsCategory: true)
                             }
@@ -70,7 +70,7 @@ struct Search: View {
                 }
             }
             
-            ForEach(Category.allCases, id: \.rawValue) { category in
+            ForEach(CategoryItem.allCases, id: \.rawValue) { category in
                 Button {
                     selectedCategory = category
                 } label: {
@@ -90,5 +90,5 @@ struct Search: View {
 }
 
 #Preview {
-    Search()
+    SearchAmongTransActions()
 }

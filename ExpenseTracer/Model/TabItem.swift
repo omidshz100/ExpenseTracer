@@ -7,26 +7,26 @@
 
 import SwiftUI
 
-enum Tab: String {
-    case recents = "Recents"
-    case search = "Filter"
-    case charts = "Charts"
-    case settings = "Settings"
+enum TabItem: String {
+    case recents = "RecentsTab"
+    case search = "FilterTab"
+    case charts = "ChartsTab"
+    case settings = "SettingsTab"
     
     @ViewBuilder
     var tabContent: some View {
         switch self {
         case .recents:
-            Image(systemName: "calendar")
+            Image(systemName: "book.pages")
             Text(self.rawValue)
         case .search:
             Image(systemName: "magnifyingglass")
             Text(self.rawValue)
         case .charts:
-            Image(systemName: "chart.bar.xaxis")
+            Image(systemName: "chart.line.uptrend.xyaxis")
             Text(self.rawValue)
         case .settings:
-            Image(systemName: "gearshape")
+            Image(systemName: "gear")
             Text(self.rawValue)
         }
     }

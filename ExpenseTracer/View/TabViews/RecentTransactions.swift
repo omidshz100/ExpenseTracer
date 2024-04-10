@@ -9,14 +9,14 @@
 import SwiftUI
 import SwiftData
 
-struct Recents: View {
+struct RecentTransactions: View {
     /// User Properties
     @AppStorage("userName") private var userName: String = ""
     /// View Properties
     @State private var startDate: Date = .now.startOfMonth
     @State private var endDate: Date = .now.endOfMonth
     @State private var showFilterView: Bool = false
-    @State private var selectedCategory: Category = .expense
+    @State private var selectedCategory: CategoryItem = .expense
     /// For Animation
     @Namespace private var animation
     var body: some View {
@@ -36,13 +36,13 @@ struct Recents: View {
                                     .font(.caption2)
                                     .foregroundStyle(.gray)
                             })
-                            .hSpacing(.leading)
+                            .hSpacingForView(.leading)
                             
                             FilterTransactionsView(startDate: startDate, endDate: endDate) { transactions in
                                 /// Card View
                                 CardView(
-                                    income: total(transactions, category: .income),
-                                    expense: total(transactions, category: .expense)
+                                    income: totalCalculator(transactions, category: .income),
+                                    expense: totalCalculator(transactions, category: .expense)
                                 )
                                 
                                 /// Custom Segmented Control
@@ -65,8 +65,8 @@ struct Recents: View {
                 .background(.gray.opacity(0.15))
                 .blur(radius: showFilterView ? 8 : 0)
                 .disabled(showFilterView)
-                .navigationDestination(for: Transaction.self) { transaction in
-                    TransactionView(editTransaction: transaction)
+                .navigationDestination(for: TransactionModel.self) { transaction in
+                    TransactionIncomeExpenseView(editTransaction: transaction)
                 }
             }
             .overlay {
@@ -107,14 +107,14 @@ struct Recents: View {
             Spacer(minLength: 0)
             
             NavigationLink {
-                TransactionView()
+                TransactionIncomeExpenseView()
             } label: {
                 Image(systemName: "plus")
                     .font(.title3)
                     .fontWeight(.semibold)
                     .foregroundStyle(.white)
                     .frame(width: 45, height: 45)
-                    .background(appTint.gradient, in: .circle)
+                    .background(appTintCustom.gradient, in: .circle)
                     .contentShape(.circle)
             }
         }
@@ -139,9 +139,9 @@ struct Recents: View {
     @ViewBuilder
     func CustomSegmentedControl() -> some View {
         HStack(spacing: 0) {
-            ForEach(Category.allCases, id: \.rawValue) { category in
+            ForEach(CategoryItem.allCases, id: \.rawValue) { category in
                 Text(category.rawValue)
-                    .hSpacing()
+                    .hSpacingForView()
                     .padding(.vertical, 10)
                     .background {
                         if category == selectedCategory {

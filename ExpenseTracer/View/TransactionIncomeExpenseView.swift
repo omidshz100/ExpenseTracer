@@ -9,17 +9,17 @@
 import SwiftUI
 import WidgetKit
 
-struct TransactionView: View {
+struct TransactionIncomeExpenseView: View {
     /// Env Properties
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
-    var editTransaction: Transaction?
+    var editTransaction: TransactionModel?
     /// View Properties
     @State private var title: String = ""
     @State private var remarks: String = ""
     @State private var amount: Double = .zero
     @State private var dateAdded: Date = .now
-    @State private var category: Category = .expense
+    @State private var category: CategoryItem = .expense
     /// Random Tint
     @State var tint: TintColor = tints.randomElement()!
     var body: some View {
@@ -28,7 +28,7 @@ struct TransactionView: View {
                 Text("Preview")
                     .font(.caption)
                     .foregroundStyle(.gray)
-                    .hSpacing(.leading)
+                    .hSpacingForView(.leading)
                 
                 /// Preview Transaction Card View
                 TransactionCardView(transaction: .init(
@@ -49,7 +49,7 @@ struct TransactionView: View {
                     Text("Amount & Category")
                         .font(.caption)
                         .foregroundStyle(.gray)
-                        .hSpacing(.leading)
+                        .hSpacingForView(.leading)
                     
                     HStack(spacing: 15) {
                         HStack(spacing: 4) {
@@ -74,7 +74,7 @@ struct TransactionView: View {
                     Text("Date")
                         .font(.caption)
                         .foregroundStyle(.gray)
-                        .hSpacing(.leading)
+                        .hSpacingForView(.leading)
                     
                     DatePicker("", selection: $dateAdded, displayedComponents: [.date])
                         .datePickerStyle(.graphical)
@@ -119,7 +119,7 @@ struct TransactionView: View {
             editTransaction?.category = category.rawValue
             editTransaction?.dateAdded = dateAdded
         } else {
-            let transaction = Transaction(title: title, remarks: remarks, amount: amount, dateAdded: dateAdded, category: category, tintColor: tint)
+            let transaction = TransactionModel(title: title, remarks: remarks, amount: amount, dateAdded: dateAdded, category: category, tintColor: tint)
             context.insert(transaction)
         }
         
@@ -135,7 +135,7 @@ struct TransactionView: View {
             Text(title)
                 .font(.caption)
                 .foregroundStyle(.gray)
-                .hSpacing(.leading)
+                .hSpacingForView(.leading)
             
             TextField(hint, text: value)
                 .padding(.horizontal, 15)
@@ -148,17 +148,17 @@ struct TransactionView: View {
     @ViewBuilder
     func CategoryCheckBox() -> some View {
         HStack(spacing: 10) {
-            ForEach(Category.allCases, id: \.rawValue) { category in
+            ForEach(CategoryItem.allCases, id: \.rawValue) { category in
                 HStack(spacing: 5) {
                     ZStack {
                         Image(systemName: "circle")
                             .font(.title3)
-                            .foregroundStyle(appTint)
+                            .foregroundStyle(appTintCustom)
                         
                         if self.category == category {
                             Image(systemName: "circle.fill")
                                 .font(.caption)
-                                .foregroundStyle(appTint)
+                                .foregroundStyle(appTintCustom)
                         }
                     }
                     
@@ -173,7 +173,7 @@ struct TransactionView: View {
         }
         .padding(.horizontal, 15)
         .padding(.vertical, 12)
-        .hSpacing(.leading)
+        .hSpacingForView(.leading)
         .background(.background, in: .rect(cornerRadius: 10))
     }
     
@@ -189,6 +189,6 @@ struct TransactionView: View {
 
 #Preview {
     NavigationStack {
-        TransactionView()
+        TransactionIncomeExpenseView()
     }
 }
