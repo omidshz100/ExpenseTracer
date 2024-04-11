@@ -8,6 +8,6 @@
 import SwiftUI
 
 enum CategoryItem: String, CaseIterable {
-    case income = "IncomeMoney"
-    case expense = "ExpenseMoney"
+    case income = "Income"
+    case expense = "Expense"
 }
