@@ -7,7 +7,14 @@
 
 
 import SwiftUI
+import UIKit
 import WidgetKit
+
+enum EntryField: Hashable {
+    case amount
+    case title
+    case remarks
+}
 
 struct TransactionIncomeExpenseView: View {
     /// Env Properties
@@ -18,93 +25,121 @@ struct TransactionIncomeExpenseView: View {
     @State private var title: String = ""
     @State private var remarks: String = ""
     @State private var amount: Double = .zero
+    @State private var amountText: String = ""
     @State private var dateAdded: Date = .now
     @State private var category: CategoryItem = .expense
     /// Random Tint
     @State var tint: TintColor = tints.randomElement()!
+    @FocusState private var focusedField: EntryField?
     var body: some View {
-        ScrollView(.vertical) {
-            VStack(spacing: 15) {
-                Text("Preview")
-                    .font(.caption)
-                    .foregroundStyle(.gray)
-                    .hSpacingForView(.leading)
-                
-                /// Preview Transaction Card View
-                TransactionCardView(transaction: .init(
+        ScrollViewReader { proxy in
+        Form {
+            Section {
+                EntryPreview(
                     title: title.isEmpty ? "Title" : title,
                     remarks: remarks.isEmpty ? "Remarks" : remarks,
                     amount: amount,
                     dateAdded: dateAdded,
-                    category: category,
-                    tintColor: tint
-                ))
-                
-                CustomSection("Title", "Magic Keyboard", value: $title)
-                
-                CustomSection("Remarks", "Apple Product!", value: $remarks)
+                    tint: tint.value
+                )
+                .listRowInsets(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
+            }
 
-                TintPicker()
-                
-                /// Amount & Category Check Box
-                VStack(alignment: .leading, spacing: 10, content: {
-                    Text("Amount & Category")
-                        .font(.caption)
-                        .foregroundStyle(.gray)
-                        .hSpacingForView(.leading)
-                    
-                    HStack(spacing: 15) {
-                        HStack(spacing: 4) {
-                            Text(currencySymbol)
-                                .font(.callout.bold())
-                            
-                            TextField("0.0", value: $amount, formatter: numberFormatter)
-                                .keyboardType(.decimalPad)
+            Section("Amount") {
+                TextField("0.0", text: $amountText)
+                    .keyboardType(.decimalPad)
+                    .focused($focusedField, equals: .amount)
+                    .id(EntryField.amount)
+                    .onChange(of: amountText) { _, newValue in
+                        let standardized = AmountText.standardize(newValue)
+                        if standardized != newValue {
+                            amountText = standardized
                         }
-                        .padding(.horizontal, 15)
-                        .padding(.vertical, 12)
-                        .background(.background, in: .rect(cornerRadius: 10))
-                        .frame(maxWidth: 130)
-                        
-                        /// Custom Check Box
-                        CategoryCheckBox()
+                        amount = AmountText.value(from: standardized)
                     }
-                })
-                
-                /// Date Picker
-                VStack(alignment: .leading, spacing: 10, content: {
-                    Text("Date")
-                        .font(.caption)
-                        .foregroundStyle(.gray)
-                        .hSpacingForView(.leading)
-                    
-                    DatePicker("", selection: $dateAdded, displayedComponents: [.date])
-                        .datePickerStyle(.graphical)
-                        .padding(.horizontal, 15)
-                        .padding(.vertical, 12)
-                        .background(.background, in: .rect(cornerRadius: 10))
-                })
+                Picker("Type", selection: $category) {
+                    ForEach(CategoryItem.allCases, id: \.self) { item in
+                        Text(item.rawValue).tag(item)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .listRowSeparator(.hidden)
+            }
 
-                if !canSave {
-                    Text("Enter a title and an amount greater than zero.")
-                        .font(.caption)
-                        .foregroundStyle(.gray)
-                        .hSpacingForView(.leading)
+            Section("Details") {
+                TextField("Title", text: $title)
+                    .focused($focusedField, equals: .title)
+                    .submitLabel(.next)
+                    .onSubmit(advanceFocus)
+                    .id(EntryField.title)
+                TextField("Remarks", text: $remarks)
+                    .focused($focusedField, equals: .remarks)
+                    .submitLabel(.done)
+                    .onSubmit(closeKeyboard)
+                    .id(EntryField.remarks)
+            }
+
+            Section("Color") {
+                HStack(spacing: 14) {
+                    ForEach(tints) { item in
+                        Button {
+                            tint = item
+                        } label: {
+                            Circle()
+                                .fill(item.value)
+                                .frame(width: 32, height: 32)
+                                .overlay {
+                                    if item.color == tint.color {
+                                        Circle().strokeBorder(.primary, lineWidth: 2).padding(-4)
+                                    }
+                                }
+                        }
+                        .buttonStyle(.plain)
+                    }
                 }
             }
-            .padding(15)
+
+            Section("Date") {
+                DatePicker("Date", selection: $dateAdded, displayedComponents: .date)
+                    .datePickerStyle(.graphical)
+                    .labelsHidden()
+            }
+
+            if !canSave {
+                Text("Enter a title and an amount greater than zero.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .scrollDismissesKeyboard(.interactively)
+        .onChange(of: focusedField) { _, field in
+            guard let field else { return }
+            Task { @MainActor in
+                try? await Task.sleep(for: .milliseconds(250))
+                withAnimation(.easeInOut(duration: 0.25)) {
+                    proxy.scrollTo(field, anchor: UnitPoint(x: 0.5, y: 0.72))
+                }
+            }
+        }
         }
         .navigationTitle("\(editTransaction == nil ? "Add" : "Edit") Transaction")
-        .background(.gray.opacity(0.15))
-        .toolbar(content: {
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Save", action: save)
                     .disabled(!canSave)
             }
-        })
-        .onAppear(perform: {
+            ToolbarItemGroup(placement: .keyboard) {
+                Button("Done", action: closeKeyboard)
+                Spacer()
+                if focusedField != .remarks {
+                    Button("Next", action: advanceFocus)
+                        .fontWeight(.semibold)
+                }
+            }
+        }
+        .onAppear {
             if let editTransaction {
-                /// Load All Existing Data from the Transaction
                 title = editTransaction.title
                 remarks = editTransaction.remarks
                 dateAdded = editTransaction.dateAdded
@@ -112,11 +147,28 @@ struct TransactionIncomeExpenseView: View {
                     self.category = category
                 }
                 amount = editTransaction.amount
+                amountText = numberFormatter.string(from: NSNumber(value: editTransaction.amount)) ?? ""
                 if let tint = editTransaction.tint {
                     self.tint = tint
                 }
             }
-        })
+        }
+    }
+
+    private func advanceFocus() {
+        switch focusedField {
+        case .amount:
+            focusedField = .title
+        case .title:
+            focusedField = .remarks
+        default:
+            closeKeyboard()
+        }
+    }
+
+    private func closeKeyboard() {
+        focusedField = nil
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
     
     private var trimmedTitle: String {
@@ -150,86 +202,6 @@ struct TransactionIncomeExpenseView: View {
         WidgetCenter.shared.reloadAllTimelines()
     }
     
-    @ViewBuilder
-    func CustomSection(_ title: String, _ hint: String, value: Binding<String>) -> some View {
-        VStack(alignment: .leading, spacing: 10, content: {
-            Text(title)
-                .font(.caption)
-                .foregroundStyle(.gray)
-                .hSpacingForView(.leading)
-            
-            TextField(hint, text: value)
-                .padding(.horizontal, 15)
-                .padding(.vertical, 12)
-                .background(.background, in: .rect(cornerRadius: 10))
-        })
-    }
-    
-    @ViewBuilder
-    func TintPicker() -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Color")
-                .font(.caption)
-                .foregroundStyle(.gray)
-                .hSpacingForView(.leading)
-
-            HStack(spacing: 12) {
-                ForEach(tints) { item in
-                    Circle()
-                        .fill(item.value)
-                        .frame(width: 28, height: 28)
-                        .overlay {
-                            if item.color == tint.color {
-                                Circle()
-                                    .strokeBorder(.primary, lineWidth: 2)
-                                    .padding(-4)
-                            }
-                        }
-                        .onTapGesture {
-                            tint = item
-                        }
-                }
-            }
-            .padding(.horizontal, 15)
-            .padding(.vertical, 12)
-            .hSpacingForView(.leading)
-            .background(.background, in: .rect(cornerRadius: 10))
-        }
-    }
-
-    /// Custom CheckBox
-    @ViewBuilder
-    func CategoryCheckBox() -> some View {
-        HStack(spacing: 10) {
-            ForEach(CategoryItem.allCases, id: \.rawValue) { category in
-                HStack(spacing: 5) {
-                    ZStack {
-                        Image(systemName: "circle")
-                            .font(.title3)
-                            .foregroundStyle(appTintCustom)
-                        
-                        if self.category == category {
-                            Image(systemName: "circle.fill")
-                                .font(.caption)
-                                .foregroundStyle(appTintCustom)
-                        }
-                    }
-                    
-                    Text(category.rawValue)
-                        .font(.caption)
-                }
-                .contentShape(.rect)
-                .onTapGesture {
-                    self.category = category
-                }
-            }
-        }
-        .padding(.horizontal, 15)
-        .padding(.vertical, 12)
-        .hSpacingForView(.leading)
-        .background(.background, in: .rect(cornerRadius: 10))
-    }
-    
     /// Number Formatter
     var numberFormatter: NumberFormatter {
         let formatter = NumberFormatter()
@@ -237,6 +209,90 @@ struct TransactionIncomeExpenseView: View {
         formatter.maximumFractionDigits = 2
         
         return formatter
+    }
+}
+
+private struct EntryPreview: View {
+    var title: String
+    var remarks: String
+    var amount: Double
+    var dateAdded: Date
+    var tint: Color
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Text(String(title.prefix(1)))
+                .font(.title)
+                .fontWeight(.semibold)
+                .foregroundStyle(.white)
+                .frame(width: 45, height: 45)
+                .background(tint.gradient, in: .circle)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                Text(remarks)
+                    .font(.caption)
+                Text(dateAdded, format: .dateTime.day().month(.abbreviated).year())
+                    .font(.caption2)
+                    .foregroundStyle(.gray)
+            }
+            .lineLimit(1)
+            .hSpacingForView(.leading)
+
+            Text(amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                .fontWeight(.semibold)
+        }
+        .padding(.horizontal, 15)
+        .padding(.vertical, 10)
+        .background(.background, in: .rect(cornerRadius: 10))
+    }
+}
+
+enum AmountText {
+    static func standardize(_ raw: String) -> String {
+        let decimal = Locale.current.decimalSeparator ?? "."
+        var output = ""
+        var hasDecimal = false
+        var fractionCount = 0
+
+        for character in raw {
+            if let digit = asciiDigit(character) {
+                if hasDecimal {
+                    guard fractionCount < 2 else { continue }
+                    fractionCount += 1
+                }
+                output.append(digit)
+            } else if !hasDecimal, isDecimalMark(character) {
+                output.append(contentsOf: decimal)
+                hasDecimal = true
+            }
+        }
+
+        return output
+    }
+
+    static func value(from standardized: String) -> Double {
+        let formatter = NumberFormatter()
+        formatter.locale = .current
+        formatter.numberStyle = .decimal
+        return formatter.number(from: standardized)?.doubleValue ?? 0
+    }
+
+    private static func asciiDigit(_ character: Character) -> Character? {
+        guard let scalar = character.unicodeScalars.first, character.unicodeScalars.count == 1 else { return nil }
+        switch scalar.value {
+        case 0x30...0x39:
+            return character
+        case 0x06F0...0x06F9, 0x0660...0x0669:
+            let zero: UInt32 = scalar.value <= 0x0669 ? 0x0660 : 0x06F0
+            return Character(UnicodeScalar(scalar.value - zero + 0x30)!)
+        default:
+            return nil
+        }
+    }
+
+    private static func isDecimalMark(_ character: Character) -> Bool {
+        character == "." || character == "," || character == "،" || character == "٫" || character == "/"
     }
 }
 

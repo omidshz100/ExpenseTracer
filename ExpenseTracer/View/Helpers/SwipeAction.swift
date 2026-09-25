@@ -19,6 +19,7 @@ struct SwipeAction<Content: View>: View {
     let viewID = "CONTENTVIEW"
     @State private var isEnabled: Bool = true
     @State private var scrollOffset: CGFloat = .zero
+    @State private var didRequestCommit = false
     var body: some View {
         ScrollViewReader { scrollProxy in
             ScrollView(.horizontal) {
@@ -89,15 +90,7 @@ struct SwipeAction<Content: View>: View {
                 HStack(spacing: 0) {
                     ForEach(filteredActions) { button in
                         Button(action: {
-                            Task {
-                                isEnabled = false
-                                resetPosition()
-                                try? await Task.sleep(for: .seconds(0.3))
-                                button.action()
-                                /// Optional
-                                try? await Task.sleep(for: .seconds(0.05))
-                                isEnabled = true
-                            }
+                            run(button.action, resetPosition: resetPosition)
                         }, label: {
                             Image(systemName: button.icon)
                                 .font(button.iconFont)
@@ -114,6 +107,18 @@ struct SwipeAction<Content: View>: View {
             }
     }
     
+    func run(_ action: @escaping () -> Void, resetPosition: @escaping () -> Void) {
+        guard !didRequestCommit else { return }
+        didRequestCommit = true
+        Task { @MainActor in
+            resetPosition()
+            try? await Task.sleep(for: .seconds(0.25))
+            action()
+            try? await Task.sleep(for: .seconds(0.5))
+            didRequestCommit = false
+        }
+    }
+
     func scrollOffset(_ proxy: GeometryProxy) -> CGFloat {
         let minX = proxy.frame(in: .scrollView(axis: .horizontal)).minX
         

@@ -15,7 +15,7 @@ struct ExpenseTracerApp: App {
         WindowGroup {
             ContentView()
                 .onChange(of: scene, { oldValue, newValue in
-                    if newValue == .background {
+                    if newValue == .background || newValue == .active {
                         WidgetCenter.shared.reloadAllTimelines()
                     }
                 })

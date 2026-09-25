@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct ApplicationSettings: View {
     /// User Properties
@@ -18,6 +19,8 @@ struct ApplicationSettings: View {
             List {
                 Section("User Name") {
                     TextField("iJustine", text: $userName)
+                        .submitLabel(.done)
+                        .onSubmit(dismissKeyboard)
                 }
                 
                 Section("App Lock") {
@@ -28,8 +31,19 @@ struct ApplicationSettings: View {
                     }
                 }
             }
+            .scrollDismissesKeyboard(.interactively)
             .navigationTitle("Settings")
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done", action: dismissKeyboard)
+                }
+            }
         }
+    }
+
+    private func dismissKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 

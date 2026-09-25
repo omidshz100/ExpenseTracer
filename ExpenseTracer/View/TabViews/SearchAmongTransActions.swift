@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 import Combine
 
 struct SearchAmongTransActions: View {
@@ -45,11 +46,25 @@ struct SearchAmongTransActions: View {
                 filterText = text
             })
             .searchable(text: $searchText)
+            .scrollDismissesKeyboard(.interactively)
+            .safeAreaInset(edge: .top, spacing: 0) {
+                if let selectedCategory {
+                    ActiveFilterChip(title: selectedCategory.rawValue) {
+                        self.selectedCategory = nil
+                    }
+                }
+            }
             .navigationTitle("Search")
             .background(.gray.opacity(0.15))
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     ToolBarContent()
+                }
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    }
                 }
             }
         }
@@ -84,8 +99,33 @@ struct SearchAmongTransActions: View {
                 }
             }
         } label: {
-            Image(systemName: "slider.vertical.3")
+            Image(systemName: selectedCategory == nil ? "slider.vertical.3" : "line.3.horizontal.decrease.circle.fill")
+                .foregroundStyle(selectedCategory == nil ? Color.primary : appTintCustom)
         }
+    }
+}
+
+private struct ActiveFilterChip: View {
+    var title: String
+    var clear: () -> Void
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "line.3.horizontal.decrease.circle.fill")
+            Text(title)
+            Button(action: clear) {
+                Image(systemName: "xmark.circle.fill")
+            }
+            .buttonStyle(.plain)
+        }
+        .font(.caption.weight(.semibold))
+        .foregroundStyle(appTintCustom)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(.background, in: Capsule())
+        .padding(.vertical, 8)
+        .frame(maxWidth: .infinity)
+        .background(.bar)
     }
 }
 

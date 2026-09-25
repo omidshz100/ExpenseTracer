@@ -28,14 +28,15 @@ struct FilterTransactionsView<Content: View>: View {
         self.content = content
     }
     
-    init(startDate: Date, endDate: Date, @ViewBuilder content: @escaping ([TransactionModel]) -> Content) {
+    init(startDate: Date, endDate: Date, newestFirst: Bool = true, @ViewBuilder content: @escaping ([TransactionModel]) -> Content) {
         /// Custom Predicate
         let predicate = #Predicate<TransactionModel> { transaction in
             return transaction.dateAdded >= startDate && transaction.dateAdded <= endDate
         }
+        let order: SortOrder = newestFirst ? .reverse : .forward
         
         _transactions = Query(filter: predicate, sort: [
-            SortDescriptor(\TransactionModel.dateAdded, order: .reverse)
+            SortDescriptor(\TransactionModel.dateAdded, order: order)
         ], animation: .snappy)
         
         self.content = content

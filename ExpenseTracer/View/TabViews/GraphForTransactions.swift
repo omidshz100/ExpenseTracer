@@ -16,20 +16,25 @@ struct GraphForTransactions: View {
     
     /// View Properties
     @Query(animation: .snappy) private var transactions: [TransactionModel]
-    
-    
-    
-    @State private var chartGroups: [ChartGroup] = []
+
+    private var chartGroups: [ChartGroup] {
+        let sources = transactions.map { transaction in
+            ChartSource(amount: transaction.amount, date: transaction.dateAdded, category: transaction.category)
+        }
+        return ChartGrouping.groups(from: sources)
+    }
+
     var body: some View {
         NavigationStack {
             ScrollView(.vertical) {
                 LazyVStack(spacing: 10) {
-                    ChartView()
-                        .frame(height: 200)
-                        .padding(10)
-                        .padding(.top, 10)
-                        .background(.background, in: .rect(cornerRadius: 10))
-                        .opacity(transactions.isEmpty ? 0 : 1)
+                    if !chartGroups.isEmpty {
+                        ChartView()
+                            .frame(height: 200)
+                            .padding(10)
+                            .padding(.top, 10)
+                            .background(.background, in: .rect(cornerRadius: 10))
+                    }
                     
                     ForEach(chartGroups) { group in
                         VStack(alignment: .leading, spacing: 10) {
@@ -51,15 +56,6 @@ struct GraphForTransactions: View {
             }
             .navigationTitle("Graphs")
             .background(.gray.opacity(0.15))
-            .task(id: chartToken) {
-                let sources = transactions.map { transaction in
-                    ChartSource(amount: transaction.amount, date: transaction.dateAdded, category: transaction.category)
-                }
-                let built = await Task.detached(priority: .userInitiated) {
-                    ChartGrouping.groups(from: sources)
-                }.value
-                chartGroups = built
-            }
             .overlay {
                 if transactions.isEmpty {
                     ContentUnavailableView("No Transactions Found", systemImage: "xmark.seal")
@@ -84,9 +80,6 @@ struct GraphForTransactions: View {
                 }
             }
         }
-        /// Making Chart Scrollable
-        .chartScrollableAxes(.horizontal)
-        .chartXVisibleDomain(length: 4)
         .chartLegend(position: .bottom, alignment: .trailing)
         .chartYAxis {
             AxisMarks(position: .leading) { value in
@@ -101,19 +94,29 @@ struct GraphForTransactions: View {
         }
         /// Foreground Colors
         .chartForegroundStyleScale(range: [Color.green.gradient, Color.red.gradient])
+        .modifier(ChartScrollModifier(monthCount: chartGroups.count))
     }
     
-    private var chartToken: String {
-        transactions.map { transaction in
-            "\(transaction.persistentModelID)|\(transaction.amount)|\(transaction.dateAdded.timeIntervalSince1970)|\(transaction.category)"
-        }.joined(separator: ";")
-    }
-
     func axisLabel(_ value: Double) -> String {
         let intValue = Int(value)
         let kValue = intValue / 1000
         
         return intValue < 1000 ? "\(intValue)" : "\(kValue)K"
+    }
+}
+
+private struct ChartScrollModifier: ViewModifier {
+    var monthCount: Int
+
+    @ViewBuilder
+    func body(content: Content) -> some View {
+        if monthCount > 4 {
+            content
+                .chartScrollableAxes(.horizontal)
+                .chartXVisibleDomain(length: 4)
+        } else {
+            content
+        }
     }
 }
 
