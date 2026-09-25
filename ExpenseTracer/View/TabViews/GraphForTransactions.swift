@@ -51,9 +51,14 @@ struct GraphForTransactions: View {
             }
             .navigationTitle("Graphs")
             .background(.gray.opacity(0.15))
-            .onAppear {
-                /// Creating Chart Group
-                createChartGroup()
+            .task(id: chartToken) {
+                let sources = transactions.map { transaction in
+                    ChartSource(amount: transaction.amount, date: transaction.dateAdded, category: transaction.category)
+                }
+                let built = await Task.detached(priority: .userInitiated) {
+                    ChartGrouping.groups(from: sources)
+                }.value
+                chartGroups = built
             }
             .overlay {
                 if transactions.isEmpty {
@@ -98,50 +103,12 @@ struct GraphForTransactions: View {
         .chartForegroundStyleScale(range: [Color.green.gradient, Color.red.gradient])
     }
     
-    func createChartGroup() {
-        Task.detached(priority: .high) {
-            let calendar = Calendar.current
-            
-            let groupedByDate = Dictionary(grouping: transactions) { transaction in
-                let components = calendar.dateComponents([.month, .year], from: transaction.dateAdded)
-                
-                return components
-            }
-            
-            /// Sorting Groups By Date
-            let sortedGroups = groupedByDate.sorted {
-                let date1 = calendar.date(from: $0.key) ?? .init()
-                let date2 = calendar.date(from: $1.key) ?? .init()
-                
-                return calendar.compare(date1, to: date2, toGranularity: .day) == .orderedDescending
-            }
-            
-            let chartGroups = sortedGroups.compactMap { dict -> ChartGroup? in
-                let date = calendar.date(from: dict.key) ?? .init()
-                let income = dict.value.filter({ $0.category == CategoryItem.income.rawValue })
-                let expense = dict.value.filter({ $0.category == CategoryItem.expense.rawValue })
-                
-                let incomeTotalValue = totalCalculator(income, category: .income)
-                let expenseTotalValue = totalCalculator(expense, category: .expense)
-                
-                return .init(
-                    date: date,
-                    categories: [
-                        .init(totalValue: incomeTotalValue, category: .income),
-                        .init(totalValue: expenseTotalValue, category: .expense)
-                    ],
-                    totalIncome: incomeTotalValue,
-                    totalExpense: expenseTotalValue
-                )
-            }
-            
-            /// UI Must be updated on Main Thread
-            await MainActor.run {
-                self.chartGroups = chartGroups
-            }
-        }
+    private var chartToken: String {
+        transactions.map { transaction in
+            "\(transaction.persistentModelID)|\(transaction.amount)|\(transaction.dateAdded.timeIntervalSince1970)|\(transaction.category)"
+        }.joined(separator: ";")
     }
-    
+
     func axisLabel(_ value: Double) -> String {
         let intValue = Int(value)
         let kValue = intValue / 1000

@@ -18,16 +18,16 @@ enum TabItem: String {
         switch self {
         case .recents:
             Image(systemName: "book.pages")
-            Text(self.rawValue)
+            Text("Recents")
         case .search:
             Image(systemName: "magnifyingglass")
-            Text(self.rawValue)
+            Text("Search")
         case .charts:
             Image(systemName: "chart.line.uptrend.xyaxis")
-            Text(self.rawValue)
+            Text("Graphs")
         case .settings:
             Image(systemName: "gear")
-            Text(self.rawValue)
+            Text("Settings")
         }
     }
 }

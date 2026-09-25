@@ -20,6 +20,6 @@ struct ExpenseTracerApp: App {
                     }
                 })
         }
-        .modelContainer(for: [TransactionModel.self])
+        .modelContainer(SharedModelContainer.shared)
     }
 }

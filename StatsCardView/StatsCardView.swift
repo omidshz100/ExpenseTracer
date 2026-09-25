@@ -53,12 +53,12 @@ struct StatsCardView: Widget {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             StatsCardViewEntryView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
-                .modelContainer(for: TransactionModel.self)
+                .modelContainer(SharedModelContainer.shared)
         }
         .supportedFamilies([.systemMedium])
         .contentMarginsDisabled()
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
+        .configurationDisplayName("Monthly Summary")
+        .description("Income, expense, and balance for the current month.")
     }
 }
 

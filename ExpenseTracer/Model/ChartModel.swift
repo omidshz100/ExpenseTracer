@@ -7,9 +7,7 @@
 
 import Foundation
 
-import SwiftUI
-
-struct ChartGroup: Identifiable {
+struct ChartGroup: Identifiable, Sendable {
     let id: UUID = .init()
     var date: Date
     var categories: [ChartCategory]
@@ -17,7 +15,7 @@ struct ChartGroup: Identifiable {
     var totalExpense: Double
 }
 
-struct ChartCategory: Identifiable {
+struct ChartCategory: Identifiable, Sendable {
     let id: UUID = .init()
     var totalValue: Double
     var category: CategoryItem

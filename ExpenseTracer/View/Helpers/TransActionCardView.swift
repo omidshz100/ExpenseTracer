@@ -12,6 +12,7 @@ struct TransactionCardView: View {
     @Environment(\.modelContext) private var context
     var transaction: TransactionModel
     var showsCategory: Bool = false
+    @State private var showDeleteConfirmation = false
     var body: some View {
         SwipeAction(cornerRadius: 10, direction: .trailing) {
             HStack(spacing: 12) {
@@ -54,9 +55,15 @@ struct TransactionCardView: View {
             .background(.background, in: .rect(cornerRadius: 10))
         } actions: {
             Action(tint: .red, icon: "trash") {
+                showDeleteConfirmation = true
+            }
+        }
+        .confirmationDialog("Delete this transaction?", isPresented: $showDeleteConfirmation, titleVisibility: .visible) {
+            Button("Delete", role: .destructive) {
                 context.delete(transaction)
                 WidgetCenter.shared.reloadAllTimelines()
             }
+            Button("Cancel", role: .cancel) {}
         }
     }
 }

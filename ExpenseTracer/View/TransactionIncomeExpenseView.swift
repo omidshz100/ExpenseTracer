@@ -43,6 +43,8 @@ struct TransactionIncomeExpenseView: View {
                 CustomSection("Title", "Magic Keyboard", value: $title)
                 
                 CustomSection("Remarks", "Apple Product!", value: $remarks)
+
+                TintPicker()
                 
                 /// Amount & Category Check Box
                 VStack(alignment: .leading, spacing: 10, content: {
@@ -82,6 +84,13 @@ struct TransactionIncomeExpenseView: View {
                         .padding(.vertical, 12)
                         .background(.background, in: .rect(cornerRadius: 10))
                 })
+
+                if !canSave {
+                    Text("Enter a title and an amount greater than zero.")
+                        .font(.caption)
+                        .foregroundStyle(.gray)
+                        .hSpacingForView(.leading)
+                }
             }
             .padding(15)
         }
@@ -90,6 +99,7 @@ struct TransactionIncomeExpenseView: View {
         .toolbar(content: {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Save", action: save)
+                    .disabled(!canSave)
             }
         })
         .onAppear(perform: {
@@ -109,17 +119,28 @@ struct TransactionIncomeExpenseView: View {
         })
     }
     
+    private var trimmedTitle: String {
+        title.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private var canSave: Bool {
+        !trimmedTitle.isEmpty && amount > 0
+    }
+
     /// Saving Data
     func save() {
+        guard canSave else { return }
+        let cleanRemarks = remarks.trimmingCharacters(in: .whitespacesAndNewlines)
         /// Saving Item to SwiftData
         if editTransaction != nil {
-            editTransaction?.title = title
-            editTransaction?.remarks = remarks
+            editTransaction?.title = trimmedTitle
+            editTransaction?.remarks = cleanRemarks
             editTransaction?.amount = amount
             editTransaction?.category = category.rawValue
             editTransaction?.dateAdded = dateAdded
+            editTransaction?.tintColor = tint.color
         } else {
-            let transaction = TransactionModel(title: title, remarks: remarks, amount: amount, dateAdded: dateAdded, category: category, tintColor: tint)
+            let transaction = TransactionModel(title: trimmedTitle, remarks: cleanRemarks, amount: amount, dateAdded: dateAdded, category: category, tintColor: tint)
             context.insert(transaction)
         }
         
@@ -144,6 +165,38 @@ struct TransactionIncomeExpenseView: View {
         })
     }
     
+    @ViewBuilder
+    func TintPicker() -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Color")
+                .font(.caption)
+                .foregroundStyle(.gray)
+                .hSpacingForView(.leading)
+
+            HStack(spacing: 12) {
+                ForEach(tints) { item in
+                    Circle()
+                        .fill(item.value)
+                        .frame(width: 28, height: 28)
+                        .overlay {
+                            if item.color == tint.color {
+                                Circle()
+                                    .strokeBorder(.primary, lineWidth: 2)
+                                    .padding(-4)
+                            }
+                        }
+                        .onTapGesture {
+                            tint = item
+                        }
+                }
+            }
+            .padding(.horizontal, 15)
+            .padding(.vertical, 12)
+            .hSpacingForView(.leading)
+            .background(.background, in: .rect(cornerRadius: 10))
+        }
+    }
+
     /// Custom CheckBox
     @ViewBuilder
     func CategoryCheckBox() -> some View {

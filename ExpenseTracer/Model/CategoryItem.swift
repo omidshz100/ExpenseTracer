@@ -5,9 +5,9 @@
 //  Created by Omid Shojaeian Zanjani on 18/12/23.
 //
 
-import SwiftUI
+import Foundation
 
-enum CategoryItem: String, CaseIterable {
+enum CategoryItem: String, CaseIterable, Sendable {
     case income = "Income"
     case expense = "Expense"
 }

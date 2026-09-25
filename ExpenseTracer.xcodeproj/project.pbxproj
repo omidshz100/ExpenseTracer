@@ -13,6 +13,9 @@
 		D95DA0B92B30792D008A4E8D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D95DA0B82B30792D008A4E8D /* Preview Assets.xcassets */; };
 		D95DA0C22B307AC4008A4E8D /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95DA0C12B307AC4008A4E8D /* SplashScreen.swift */; };
 		D95DA0C52B307DAB008A4E8D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95DA0C42B307DAB008A4E8D /* Constants.swift */; };
+		D9AA00022BC50001006EF862 /* SharedModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AA00012BC50001006EF862 /* SharedModelContainer.swift */; };
+		D9AA00032BC50001006EF862 /* SharedModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AA00012BC50001006EF862 /* SharedModelContainer.swift */; };
+		D9AA00052BC50001006EF862 /* ChartGrouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AA00042BC50001006EF862 /* ChartGrouping.swift */; };
 		D95DA0C72B30819C008A4E8D /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95DA0C62B30819C008A4E8D /* TabItem.swift */; };
 		D996D08F2B34477100EEFCE0 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D996D08E2B34477100EEFCE0 /* Date+Extension.swift */; };
 		D996D0922B344CC100EEFCE0 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D996D0912B344CC100EEFCE0 /* CardView.swift */; };
@@ -79,6 +82,8 @@
 		D95DA0B82B30792D008A4E8D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D95DA0C12B307AC4008A4E8D /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
 		D95DA0C42B307DAB008A4E8D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		D9AA00012BC50001006EF862 /* SharedModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedModelContainer.swift; sourceTree = "<group>"; };
+		D9AA00042BC50001006EF862 /* ChartGrouping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartGrouping.swift; sourceTree = "<group>"; };
 		D95DA0C62B30819C008A4E8D /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
 		D996D08E2B34477100EEFCE0 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		D996D0912B344CC100EEFCE0 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
@@ -198,6 +203,8 @@
 			isa = PBXGroup;
 			children = (
 				D95DA0C42B307DAB008A4E8D /* Constants.swift */,
+				D9AA00012BC50001006EF862 /* SharedModelContainer.swift */,
+				D9AA00042BC50001006EF862 /* ChartGrouping.swift */,
 				D9AC32012B333049006F7973 /* View+Extentions.swift */,
 				D996D08E2B34477100EEFCE0 /* Date+Extension.swift */,
 			);
@@ -362,6 +369,8 @@
 				D95DA0C22B307AC4008A4E8D /* SplashScreen.swift in Sources */,
 				D9AC32002B30A3FD006F7973 /* ApplicationSettings.swift in Sources */,
 				D95DA0C52B307DAB008A4E8D /* Constants.swift in Sources */,
+				D9AA00022BC50001006EF862 /* SharedModelContainer.swift in Sources */,
+				D9AA00052BC50001006EF862 /* ChartGrouping.swift in Sources */,
 				D9AC31FC2B30A3D2006F7973 /* SearchAmongTransActions.swift in Sources */,
 				D9AC31FA2B30A3C8006F7973 /* RecentTransactions.swift in Sources */,
 				D9AC32022B333049006F7973 /* View+Extentions.swift in Sources */,
@@ -388,6 +397,7 @@
 				D9CE2F9C2BC473C4006EF862 /* CardView.swift in Sources */,
 				D9CE2F892BC471B1006EF862 /* StatsCardViewBundle.swift in Sources */,
 				D9CE2FA12BC473FD006EF862 /* Constants.swift in Sources */,
+				D9AA00032BC50001006EF862 /* SharedModelContainer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -527,6 +537,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ExpenseTracer/ExpenseTracer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"ExpenseTracer/Preview Content\"";
@@ -534,7 +545,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "We need your pesmission to unlock your app.";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "We need your permission to unlock your app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -563,6 +574,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ExpenseTracer/ExpenseTracer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"ExpenseTracer/Preview Content\"";
@@ -570,7 +582,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "We need your pesmission to unlock your app.";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "We need your permission to unlock your app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -598,6 +610,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = StatsCardViewExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4C34TC26X4;
@@ -626,6 +639,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = StatsCardViewExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4C34TC26X4;
