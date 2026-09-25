@@ -8,61 +8,55 @@
 import SwiftUI
 
 struct CardView: View {
-    var income: Double
-    var expense: Double
+    var income: Decimal
+    var expense: Decimal
     var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 15)
-                .fill(.background)
-            
-            VStack(spacing: 0) {
-                HStack(spacing: 12) {
-                    Text("\(currencyStringGenerator(income - expense))")
-                        .font(.title.bold())
-                        .foregroundStyle(Color.primary)
-                    
-                    Image(systemName: expense > income ? "chart.line.downtrend.xyaxis" : "chart.line.uptrend.xyaxis")
-                        .font(.title3)
-                        .foregroundStyle(expense > income ? .red : .green)
-                }
-                .padding(.bottom, 25)
-                
-                HStack(spacing: 0) {
-                    ForEach(CategoryItem.allCases, id: \.rawValue) { category in
-                        let symbolImage = category == .income ? "arrow.down" : "arrow.up"
-                        let tint = category == .income ? Color.green : Color.red
-                        
-                        HStack(spacing: 10) {
-                            Image(systemName: symbolImage)
-                                .font(.callout.bold())
-                                .foregroundStyle(tint)
-                                .frame(width: 35, height: 35)
-                                .background {
-                                    Circle()
-                                        .fill(tint.opacity(0.25).gradient)
-                                }
-                            
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(category.rawValue)
-                                    .font(.caption2)
-                                    .foregroundStyle(.gray)
-                                
-                                Text(currencyStringGenerator(category == .income ? income : expense, allowedDigits: 0))
-                                    .font(.callout)
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(Color.primary)
-                            }
-                            
-                            if category == .income {
-                                Spacer(minLength: 10)
-                            }
+        VStack(spacing: 14) {
+            HStack(spacing: 8) {
+                Text(currencyStringGenerator(income - expense, allowedDigits: 0))
+                    .font(.title2.bold())
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+
+                Image(systemName: expense > income ? "chart.line.downtrend.xyaxis" : "chart.line.uptrend.xyaxis")
+                    .font(.body)
+                    .foregroundStyle(expense > income ? .red : .green)
+            }
+
+            HStack(spacing: 0) {
+                ForEach(CategoryItem.allCases, id: \.rawValue) { category in
+                    let symbolImage = category == .income ? "arrow.down" : "arrow.up"
+                    let tint = category == .income ? Color.green : Color.red
+
+                    HStack(spacing: 8) {
+                        Image(systemName: symbolImage)
+                            .font(.caption.bold())
+                            .foregroundStyle(tint)
+                            .frame(width: 28, height: 28)
+                            .background(tint.opacity(0.2), in: Circle())
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(category.rawValue)
+                                .font(.caption2)
+                                .foregroundStyle(.gray)
+                            Text(currencyStringGenerator(category == .income ? income : expense, allowedDigits: 0))
+                                .font(.subheadline.weight(.semibold))
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.7)
+                        }
+
+                        if category == .income {
+                            Spacer(minLength: 8)
                         }
                     }
                 }
             }
-            .padding([.horizontal, .bottom], 25)
-            .padding(.top, 15)
         }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 14)
+        .frame(maxWidth: .infinity)
+        .background(.background, in: RoundedRectangle(cornerRadius: 15))
+        .fixedSize(horizontal: false, vertical: true)
     }
 }
 

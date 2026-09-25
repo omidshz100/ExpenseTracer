@@ -24,7 +24,7 @@ struct TransactionIncomeExpenseView: View {
     /// View Properties
     @State private var title: String = ""
     @State private var remarks: String = ""
-    @State private var amount: Double = .zero
+    @State private var amount: Decimal = 0
     @State private var amountText: String = ""
     @State private var dateAdded: Date = .now
     @State private var category: CategoryItem = .expense
@@ -36,7 +36,7 @@ struct TransactionIncomeExpenseView: View {
         Form {
             Section {
                 EntryPreview(
-                    title: title.isEmpty ? "Title" : title,
+                    title: trimmedTitle.isEmpty ? defaultTitle : trimmedTitle,
                     remarks: remarks.isEmpty ? "Remarks" : remarks,
                     amount: amount,
                     dateAdded: dateAdded,
@@ -106,7 +106,7 @@ struct TransactionIncomeExpenseView: View {
             }
 
             if !canSave {
-                Text("Enter a title and an amount greater than zero.")
+                Text("Enter an amount greater than zero.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }
@@ -146,8 +146,8 @@ struct TransactionIncomeExpenseView: View {
                 if let category = editTransaction.rawCategory {
                     self.category = category
                 }
-                amount = editTransaction.amount
-                amountText = numberFormatter.string(from: NSNumber(value: editTransaction.amount)) ?? ""
+                amount = editTransaction.money
+                amountText = numberFormatter.string(from: editTransaction.money as NSDecimalNumber) ?? ""
                 if let tint = editTransaction.tint {
                     self.tint = tint
                 }
@@ -175,24 +175,29 @@ struct TransactionIncomeExpenseView: View {
         title.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
+    private var defaultTitle: String {
+        category == .income ? "Income" : "Expense"
+    }
+
     private var canSave: Bool {
-        !trimmedTitle.isEmpty && amount > 0
+        amount > 0
     }
 
     /// Saving Data
     func save() {
         guard canSave else { return }
         let cleanRemarks = remarks.trimmingCharacters(in: .whitespacesAndNewlines)
+        let resolvedTitle = trimmedTitle.isEmpty ? defaultTitle : trimmedTitle
         /// Saving Item to SwiftData
         if editTransaction != nil {
-            editTransaction?.title = trimmedTitle
+            editTransaction?.title = resolvedTitle
             editTransaction?.remarks = cleanRemarks
-            editTransaction?.amount = amount
+            editTransaction?.money = amount
             editTransaction?.category = category.rawValue
             editTransaction?.dateAdded = dateAdded
             editTransaction?.tintColor = tint.color
         } else {
-            let transaction = TransactionModel(title: trimmedTitle, remarks: cleanRemarks, amount: amount, dateAdded: dateAdded, category: category, tintColor: tint)
+            let transaction = TransactionModel(title: resolvedTitle, remarks: cleanRemarks, amount: amount, dateAdded: dateAdded, category: category, tintColor: tint)
             context.insert(transaction)
         }
         
@@ -215,7 +220,7 @@ struct TransactionIncomeExpenseView: View {
 private struct EntryPreview: View {
     var title: String
     var remarks: String
-    var amount: Double
+    var amount: Decimal
     var dateAdded: Date
     var tint: Color
 
@@ -271,11 +276,12 @@ enum AmountText {
         return output
     }
 
-    static func value(from standardized: String) -> Double {
+    static func value(from standardized: String) -> Decimal {
         let formatter = NumberFormatter()
         formatter.locale = .current
         formatter.numberStyle = .decimal
-        return formatter.number(from: standardized)?.doubleValue ?? 0
+        formatter.generatesDecimalNumbers = true
+        return (formatter.number(from: standardized) as? NSDecimalNumber)?.decimalValue ?? 0
     }
 
     private static func asciiDigit(_ character: Character) -> Character? {

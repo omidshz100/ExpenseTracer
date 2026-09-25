@@ -19,7 +19,7 @@ struct GraphForTransactions: View {
 
     private var chartGroups: [ChartGroup] {
         let sources = transactions.map { transaction in
-            ChartSource(amount: transaction.amount, date: transaction.dateAdded, category: transaction.category)
+            ChartSource(amount: transaction.money, date: transaction.dateAdded, category: transaction.category)
         }
         return ChartGrouping.groups(from: sources)
     }
@@ -72,7 +72,7 @@ struct GraphForTransactions: View {
                 ForEach(group.categories) { chart  in
                     BarMark(
                         x: .value("Month", format(date: group.date, format: "MMM yy")),
-                        y: .value(chart.category.rawValue, chart.totalValue),
+                        y: .value(chart.category.rawValue, NSDecimalNumber(decimal: chart.totalValue).doubleValue),
                         width: 20
                     )
                     .position(by: .value("Category", chart.category.rawValue), axis: .horizontal)

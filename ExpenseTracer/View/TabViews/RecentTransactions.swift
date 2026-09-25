@@ -12,7 +12,6 @@ import UIKit
 
 struct RecentTransactions: View {
     /// User Properties
-    @AppStorage("userName") private var userName: String = ""
     /// View Properties
     @State private var startDate: Date = .now.startOfMonth
     @State private var endDate: Date = .now.endOfMonth
@@ -23,68 +22,69 @@ struct RecentTransactions: View {
     @Query private var transactions: [TransactionModel]
     @Environment(\.scenePhase) private var scenePhase
     @State private var today = Date()
-    /// For Animation
-    @Namespace private var animation
     var body: some View {
         GeometryReader {
             /// For Animation Purpose
             let size = $0.size
             
             NavigationStack {
-                ScrollView(.vertical) {
-                    LazyVStack(spacing: 10, pinnedViews: [.sectionHeaders]) {
-                        Section {
-                            MonthFilterBar(
-                                months: recentMonths,
-                                selectedKey: savedMonth,
-                                monthCounts: monthCounts,
-                                removableKeys: Set(extraMonthKeys),
-                                title: monthTitle(_:),
-                                onSelect: selectMonth,
-                                onPickFromCalendar: addMonthFromCalendar,
-                                onRemove: removeExtraMonth
+                VStack(spacing: 10) {
+                    HeaderView(size)
+
+                    MonthFilterBar(
+                        months: recentMonths,
+                        selectedKey: savedMonth,
+                        monthCounts: monthCounts,
+                        removableKeys: Set(extraMonthKeys),
+                        title: monthTitle(_:),
+                        onSelect: selectMonth,
+                        onPickFromCalendar: addMonthFromCalendar,
+                        onRemove: removeExtraMonth
+                    )
+
+                    FilterTransactionsView(startDate: startDate, endDate: endDate, newestFirst: newestFirst) { transactions in
+                        VStack(spacing: 10) {
+                            CardView(
+                                income: totalCalculator(transactions, category: .income),
+                                expense: totalCalculator(transactions, category: .expense)
                             )
-                            
-                            FilterTransactionsView(startDate: startDate, endDate: endDate, newestFirst: newestFirst) { transactions in
-                                /// Card View
-                                CardView(
-                                    income: totalCalculator(transactions, category: .income),
-                                    expense: totalCalculator(transactions, category: .expense)
-                                )
-                                
-                                HStack(spacing: 10) {
-                                    CustomSegmentedControl()
-                                    Button {
-                                        newestFirst.toggle()
-                                    } label: {
-                                        VStack(spacing: 2) {
-                                            Image(systemName: newestFirst ? "arrow.down" : "arrow.up")
-                                                .font(.body.weight(.semibold))
-                                            Text(newestFirst ? "New" : "Old")
-                                                .font(.caption2.weight(.semibold))
-                                        }
-                                        .foregroundStyle(appTintCustom)
-                                        .frame(width: 44, height: 44)
-                                        .background(Color.gray.opacity(0.15), in: Circle())
+
+                            HStack(spacing: 10) {
+                                Picker("Category", selection: $selectedCategoryRaw) {
+                                    ForEach(CategoryItem.allCases, id: \.rawValue) { category in
+                                        Text(category.rawValue).tag(category.rawValue)
                                     }
-                                    .buttonStyle(.plain)
-                                    .accessibilityLabel(newestFirst ? "Newest first" : "Oldest first")
                                 }
-                                .padding(.bottom, 10)
-                                
-                                ForEach(transactions.filter({ $0.category == selectedCategoryRaw })) { transaction in
-                                    NavigationLink(value: transaction) {
-                                        TransactionCardView(transaction: transaction)
+                                .pickerStyle(.segmented)
+                                .labelsHidden()
+
+                                Button {
+                                    newestFirst.toggle()
+                                } label: {
+                                    VStack(spacing: 2) {
+                                        Image(systemName: newestFirst ? "arrow.down" : "arrow.up")
+                                            .font(.body.weight(.semibold))
+                                        Text(newestFirst ? "New" : "Old")
+                                            .font(.caption2.weight(.semibold))
                                     }
-                                    .buttonStyle(.plain)
+                                    .foregroundStyle(appTintCustom)
+                                    .frame(width: 44, height: 44)
+                                    .background(Color.gray.opacity(0.15), in: Circle())
                                 }
+                                .buttonStyle(.plain)
+                                .accessibilityLabel(newestFirst ? "Newest first" : "Oldest first")
                             }
-                        } header: {
-                            HeaderView(size)
+
+                            TabView(selection: $selectedCategoryRaw) {
+                                categoryPage(transactions, category: .income)
+                                categoryPage(transactions, category: .expense)
+                            }
+                            .tabViewStyle(.page(indexDisplayMode: .never))
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                     }
-                    .padding(15)
                 }
+                .padding(15)
                 .background(.gray.opacity(0.15))
                 .navigationDestination(for: TransactionModel.self) { transaction in
                     TransactionIncomeExpenseView(editTransaction: transaction)
@@ -194,12 +194,6 @@ struct RecentTransactions: View {
             VStack(alignment: .leading, spacing: 5, content: {
                 Text("Welcome!")
                     .font(.title.bold())
-                
-                if !userName.isEmpty {
-                    Text(userName)
-                        .font(.callout)
-                        .foregroundStyle(.gray)
-                }
             })
             .visualEffect { content, geometryProxy in
                 content
@@ -220,7 +214,7 @@ struct RecentTransactions: View {
                     .contentShape(.circle)
             }
         }
-        .padding(.bottom, userName.isEmpty ? 10 : 5)
+        .padding(.bottom, 10)
         .background {
             VStack(spacing: 0) {
                 Rectangle()
@@ -237,35 +231,27 @@ struct RecentTransactions: View {
         }
     }
     
-    /// Segmented Control
-    @ViewBuilder
-    func CustomSegmentedControl() -> some View {
-        HStack(spacing: 0) {
-            ForEach(CategoryItem.allCases, id: \.rawValue) { category in
-                Button {
-                    withAnimation(.snappy) {
-                        selectedCategoryRaw = category.rawValue
-                    }
-                } label: {
-                    Text(category.rawValue)
-                        .foregroundStyle(Color.primary)
-                        .hSpacingForView()
-                        .padding(.vertical, 10)
-                        .background {
-                            if category.rawValue == selectedCategoryRaw {
-                                Capsule()
-                                    .fill(.background)
-                                    .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
-                            }
+    private func categoryPage(_ transactions: [TransactionModel], category: CategoryItem) -> some View {
+        let items = transactions.filter { $0.category == category.rawValue }
+        return ScrollView(.vertical) {
+            LazyVStack(spacing: 10) {
+                if items.isEmpty {
+                    ContentUnavailableView("No \(category.rawValue)", systemImage: "tray")
+                        .padding(.top, 24)
+                } else {
+                    ForEach(items) { transaction in
+                        NavigationLink(value: transaction) {
+                            TransactionCardView(transaction: transaction)
                         }
+                        .buttonStyle(.plain)
+                    }
                 }
-                .buttonStyle(.plain)
             }
+            .padding(.bottom, 12)
         }
-        .background(.gray.opacity(0.15), in: .capsule)
-        .padding(.top, 5)
+        .tag(category.rawValue)
     }
-    
+
     func headerBGOpacity(_ proxy: GeometryProxy) -> CGFloat {
         let minY = proxy.frame(in: .scrollView).minY + safeArea.top
         return minY > 0 ? 0 : (-minY / 15)

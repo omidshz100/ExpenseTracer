@@ -6,23 +6,18 @@
 //
 
 import SwiftUI
-import UIKit
+import SwiftData
+import WidgetKit
 
 struct ApplicationSettings: View {
-    /// User Properties
-    @AppStorage("userName") private var userName: String = ""
     /// App Lock Properties
     @AppStorage("isAppLockEnabled") private var isAppLockEnabled: Bool = false
     @AppStorage("lockWhenAppGoesBackground") private var lockWhenAppGoesBackground: Bool = false
+    @Environment(\.modelContext) private var modelContext
+    @State private var showClearConfirmation = false
     var body: some View {
         NavigationStack {
             List {
-                Section("User Name") {
-                    TextField("iJustine", text: $userName)
-                        .submitLabel(.done)
-                        .onSubmit(dismissKeyboard)
-                }
-                
                 Section("App Lock") {
                     Toggle("Enable App Lock", isOn: $isAppLockEnabled)
                     
@@ -30,20 +25,34 @@ struct ApplicationSettings: View {
                         Toggle("Lock When App Goes Background", isOn: $lockWhenAppGoesBackground)
                     }
                 }
-            }
-            .scrollDismissesKeyboard(.interactively)
-            .navigationTitle("Settings")
-            .toolbar {
-                ToolbarItemGroup(placement: .keyboard) {
-                    Spacer()
-                    Button("Done", action: dismissKeyboard)
+
+                Section {
+                    Button("Delete All Transactions", role: .destructive) {
+                        showClearConfirmation = true
+                    }
+                } footer: {
+                    Text("Removes every income and expense. App lock stays.")
                 }
             }
+            .confirmationDialog("Delete all transactions?", isPresented: $showClearConfirmation, titleVisibility: .visible) {
+                Button("Delete All", role: .destructive, action: deleteAllTransactions)
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("This cannot be undone.")
+            }
+            .navigationTitle("Settings")
         }
     }
 
-    private func dismissKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    private func deleteAllTransactions() {
+        do {
+            let transactions = try modelContext.fetch(FetchDescriptor<TransactionModel>())
+            for transaction in transactions {
+                modelContext.delete(transaction)
+            }
+            try modelContext.save()
+            WidgetCenter.shared.reloadAllTimelines()
+        } catch {}
     }
 }
 

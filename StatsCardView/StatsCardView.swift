@@ -12,7 +12,7 @@ import SwiftData
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> WidgetEntry {
-        WidgetEntry(date: .now, income: 2400, expense: 860)
+        WidgetEntry(date: .now, income: Decimal(2400), expense: Decimal(860))
     }
 
     func getSnapshot(in context: Context, completion: @escaping (WidgetEntry) -> ()) {
@@ -59,8 +59,8 @@ struct Provider: TimelineProvider {
 
 struct WidgetEntry: TimelineEntry {
     let date: Date
-    let income: Double
-    let expense: Double
+    let income: Decimal
+    let expense: Decimal
     /// 0...1, how far the bar and percent have drawn in.
     var shown: Double = 1
     /// Radians, drives the slow background drift.
@@ -79,10 +79,10 @@ struct WidgetEntry: TimelineEntry {
         let transactions = (try? context.fetch(descriptor)) ?? []
         let income = transactions
             .filter { $0.category == CategoryItem.income.rawValue }
-            .reduce(0) { $0 + $1.amount }
+            .reduce(Decimal.zero) { $0 + $1.money }
         let expense = transactions
             .filter { $0.category == CategoryItem.expense.rawValue }
-            .reduce(0) { $0 + $1.amount }
+            .reduce(Decimal.zero) { $0 + $1.money }
         return WidgetEntry(date: now, income: income, expense: expense)
     }
 }
@@ -93,7 +93,7 @@ struct StatsCardViewEntryView: View {
     private var isEmpty: Bool { entry.income == 0 && entry.expense == 0 }
     private var spentRatio: Double {
         guard entry.income > 0 else { return 0 }
-        return entry.expense / entry.income
+        return NSDecimalNumber(decimal: entry.expense / entry.income).doubleValue
     }
 
     var body: some View {
@@ -156,7 +156,7 @@ struct StatsCardViewEntryView: View {
         Int((spentRatio * entry.shown * 100).rounded())
     }
 
-    private func amountPill(title: String, value: Double, tint: Color, symbol: String) -> some View {
+    private func amountPill(title: String, value: Decimal, tint: Color, symbol: String) -> some View {
         HStack(spacing: 8) {
             Image(systemName: symbol)
                 .font(.caption.bold())
@@ -219,5 +219,5 @@ struct StatsCardView: Widget {
 #Preview(as: .systemMedium) {
     StatsCardView()
 } timeline: {
-    WidgetEntry(date: .now, income: 2400, expense: 860)
+    WidgetEntry(date: .now, income: Decimal(2400), expense: Decimal(860))
 }

@@ -37,12 +37,12 @@ extension View {
         return formatter.string(from: date)
     }
     
-    func currencyStringGenerator(_ value: Double, allowedDigits: Int = 2) -> String {
+    func currencyStringGenerator(_ value: Decimal, allowedDigits: Int = 2) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.maximumFractionDigits = allowedDigits
         
-        return formatter.string(from: .init(value: value)) ?? ""
+        return formatter.string(from: value as NSDecimalNumber) ?? ""
     }
     
     var currencySymbol: String {
@@ -51,9 +51,9 @@ extension View {
         return locale.currencySymbol ?? ""
     }
     
-    func totalCalculator(_ transactions: [TransactionModel], category: CategoryItem) -> Double {
-        return transactions.filter({ $0.category == category.rawValue }).reduce(Double.zero) { partialResult, transaction in
-            return partialResult + transaction.amount
+    func totalCalculator(_ transactions: [TransactionModel], category: CategoryItem) -> Decimal {
+        return transactions.filter({ $0.category == category.rawValue }).reduce(Decimal.zero) { partialResult, transaction in
+            return partialResult + transaction.money
         }
     }
 }

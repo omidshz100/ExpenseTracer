@@ -44,7 +44,10 @@ struct ContentView: View {
                     .interactiveDismissDisabled()
             })
         }
-        .onAppear(perform: insertSampleTransactionsIfNeeded)
+        .onAppear {
+            migrateAmountsToDecimal()
+            insertSampleTransactionsIfNeeded()
+        }
     }
 
     private func insertSampleTransactionsIfNeeded() {
@@ -73,7 +76,7 @@ struct ContentView: View {
             let date = calendar.date(byAdding: .day, value: -dayOffset, to: .now) ?? .now
             let isIncome = index.isMultiple(of: 5)
             let source = isIncome ? incomes[index % incomes.count] : expenses[index % expenses.count]
-            let amount = isIncome ? Double(1800 + (index % 7) * 150) : Double(8 + (index % 23) * 7)
+            let amount: Decimal = isIncome ? Decimal(1800 + (index % 7) * 150) : Decimal(8 + (index % 23) * 7)
             let transaction = TransactionModel(
                 title: source.0,
                 remarks: source.1,
@@ -87,6 +90,20 @@ struct ContentView: View {
 
         didInsertSampleTransactions = true
         WidgetCenter.shared.reloadAllTimelines()
+    }
+
+    /// Copies older floating-point amounts into the exact decimal field once.
+    private func migrateAmountsToDecimal() {
+        guard let transactions = try? context.fetch(FetchDescriptor<TransactionModel>()) else { return }
+        var changed = false
+        for transaction in transactions where transaction.amountDecimal == 0 && transaction.amount != 0 {
+            transaction.amountDecimal = Decimal(transaction.amount)
+            changed = true
+        }
+        if changed {
+            try? context.save()
+            WidgetCenter.shared.reloadAllTimelines()
+        }
     }
 }
 

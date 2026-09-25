@@ -6,7 +6,7 @@
 import Foundation
 
 struct ChartSource: Sendable {
-    var amount: Double
+    var amount: Decimal
     var date: Date
     var category: String
 }
@@ -39,8 +39,8 @@ enum ChartGrouping {
         }
     }
 
-    private static func total(_ sources: [ChartSource], category: CategoryItem) -> Double {
-        sources.reduce(0) { partial, source in
+    private static func total(_ sources: [ChartSource], category: CategoryItem) -> Decimal {
+        sources.reduce(Decimal.zero) { partial, source in
             source.category == category.rawValue ? partial + source.amount : partial
         }
     }
