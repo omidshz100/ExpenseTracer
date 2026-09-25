@@ -12,7 +12,7 @@ struct SplashScreen: View {
     @AppStorage("isFirstTime") private var isFirstTime: Bool = true
     var body: some View {
         VStack(spacing: 15) {
-            Text("What's New in the\nExpense Tracker")
+            Text(AppLanguage.text("What's New in the\nExpense Tracker"))
                 .font(.largeTitle.bold())
                 .multilineTextAlignment(.center)
                 .padding(.top, 65)
@@ -20,11 +20,11 @@ struct SplashScreen: View {
             
             /// Points View
             VStack(alignment: .leading, spacing: 25, content: {
-                PointView(symbol: "dollarsign", title: "Transactions", subTitle: "Keep track of your earnings and expenses.")
+                PointView(symbol: "dollarsign", title: AppLanguage.text("Transactions"), subTitle: AppLanguage.text("Keep track of your earnings and expenses."))
                 
-                PointView(symbol: "chart.bar.fill", title: "Visual Charts", subTitle: "View your transactions using eye-catching graphic representations.")
+                PointView(symbol: "chart.bar.fill", title: AppLanguage.text("Visual Charts"), subTitle: AppLanguage.text("View your transactions using eye-catching graphic representations."))
                 
-                PointView(symbol: "magnifyingglass", title: "Advance Filters", subTitle: "Find the expenses you want by advance search and filtering.")
+                PointView(symbol: "magnifyingglass", title: AppLanguage.text("Advance Filters"), subTitle: AppLanguage.text("Find the expenses you want by advance search and filtering."))
             })
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 15)
@@ -34,7 +34,7 @@ struct SplashScreen: View {
             Button(action: {
                 isFirstTime = false
             }, label: {
-                Text("Continue")
+                Text(AppLanguage.text("Continue"))
                     .fontWeight(.bold)
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)

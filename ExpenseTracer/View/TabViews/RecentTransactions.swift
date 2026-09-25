@@ -32,7 +32,7 @@ struct RecentTransactions: View {
                             Button(action: {
                                 showFilterView = true
                             }, label: {
-                                Text("\(format(date: startDate,format: "dd - MMM yy")) to \(format(date: endDate,format: "dd - MMM yy"))")
+                                Text(String(format: AppLanguage.text("%@ to %@"), format(date: startDate, format: "dd - MMM yy"), format(date: endDate, format: "dd - MMM yy")))
                                     .font(.caption2)
                                     .foregroundStyle(.gray)
                             })
@@ -90,7 +90,7 @@ struct RecentTransactions: View {
     func HeaderView(_ size: CGSize) -> some View {
         HStack(spacing: 10) {
             VStack(alignment: .leading, spacing: 5, content: {
-                Text("Welcome!")
+                Text(AppLanguage.text("Welcome!"))
                     .font(.title.bold())
                 
                 if !userName.isEmpty {
@@ -140,7 +140,7 @@ struct RecentTransactions: View {
     func CustomSegmentedControl() -> some View {
         HStack(spacing: 0) {
             ForEach(CategoryItem.allCases, id: \.rawValue) { category in
-                Text(category.rawValue)
+                Text(category.title)
                     .hSpacingForView()
                     .padding(.vertical, 10)
                     .background {

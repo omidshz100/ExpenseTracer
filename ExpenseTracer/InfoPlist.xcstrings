@@ -1,0 +1,29 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "NSFaceIDUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We need your permission to unlock your app."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per sbloccare l'app è necessaria l'autorizzazione all'autenticazione biometrica."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "برای باز کردن قفل برنامه به اجازهٔ شما برای احراز هویت بیومتریک نیاز داریم."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

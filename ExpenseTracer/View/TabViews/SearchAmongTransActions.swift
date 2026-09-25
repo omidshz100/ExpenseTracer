@@ -32,7 +32,7 @@ struct SearchAmongTransActions: View {
                 .padding(15)
             }
             .overlay(content: {
-                ContentUnavailableView("Search Transactions", systemImage: "magnifyingglass")
+                ContentUnavailableView(AppLanguage.text("Search Transactions"), systemImage: "magnifyingglass")
                     .opacity(filterText.isEmpty ? 1 : 0)
             })
             .onChange(of: searchText, { oldValue, newValue in
@@ -44,8 +44,8 @@ struct SearchAmongTransActions: View {
             .onReceive(searchPublisher.debounce(for: .seconds(0.3), scheduler: DispatchQueue.main), perform: { text in
                 filterText = text
             })
-            .searchable(text: $searchText)
-            .navigationTitle("Search")
+            .searchable(text: $searchText, prompt: AppLanguage.text("Search"))
+            .navigationTitle(AppLanguage.text("Search"))
             .background(.gray.opacity(0.15))
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -62,7 +62,7 @@ struct SearchAmongTransActions: View {
                 selectedCategory = nil
             } label: {
                 HStack {
-                    Text("Both")
+                    Text(AppLanguage.text("Both"))
                     
                     if selectedCategory == nil {
                         Image(systemName: "checkmark")
@@ -75,7 +75,7 @@ struct SearchAmongTransActions: View {
                     selectedCategory = category
                 } label: {
                     HStack {
-                        Text(category.rawValue)
+                        Text(category.title)
                         
                         if selectedCategory == category {
                             Image(systemName: "checkmark")

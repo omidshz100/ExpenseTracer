@@ -25,28 +25,28 @@ struct TransactionIncomeExpenseView: View {
     var body: some View {
         ScrollView(.vertical) {
             VStack(spacing: 15) {
-                Text("Preview")
+                Text(AppLanguage.text("Preview"))
                     .font(.caption)
                     .foregroundStyle(.gray)
                     .hSpacingForView(.leading)
                 
                 /// Preview Transaction Card View
                 TransactionCardView(transaction: .init(
-                    title: title.isEmpty ? "Title" : title,
-                    remarks: remarks.isEmpty ? "Remarks" : remarks,
+                    title: title.isEmpty ? AppLanguage.text("Title") : title,
+                    remarks: remarks.isEmpty ? AppLanguage.text("Remarks") : remarks,
                     amount: amount,
                     dateAdded: dateAdded,
                     category: category,
                     tintColor: tint
                 ))
                 
-                CustomSection("Title", "Magic Keyboard", value: $title)
+                CustomSection(AppLanguage.text("Title"), AppLanguage.text("Magic Keyboard"), value: $title)
                 
-                CustomSection("Remarks", "Apple Product!", value: $remarks)
+                CustomSection(AppLanguage.text("Remarks"), AppLanguage.text("Apple Product!"), value: $remarks)
                 
                 /// Amount & Category Check Box
                 VStack(alignment: .leading, spacing: 10, content: {
-                    Text("Amount & Category")
+                    Text(AppLanguage.text("Amount & Category"))
                         .font(.caption)
                         .foregroundStyle(.gray)
                         .hSpacingForView(.leading)
@@ -71,7 +71,7 @@ struct TransactionIncomeExpenseView: View {
                 
                 /// Date Picker
                 VStack(alignment: .leading, spacing: 10, content: {
-                    Text("Date")
+                    Text(AppLanguage.text("Date"))
                         .font(.caption)
                         .foregroundStyle(.gray)
                         .hSpacingForView(.leading)
@@ -85,11 +85,11 @@ struct TransactionIncomeExpenseView: View {
             }
             .padding(15)
         }
-        .navigationTitle("\(editTransaction == nil ? "Add" : "Edit") Transaction")
+        .navigationTitle(editTransaction == nil ? AppLanguage.text("Add Transaction") : AppLanguage.text("Edit Transaction"))
         .background(.gray.opacity(0.15))
         .toolbar(content: {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Save", action: save)
+                Button(AppLanguage.text("Save"), action: save)
             }
         })
         .onAppear(perform: {
@@ -162,7 +162,7 @@ struct TransactionIncomeExpenseView: View {
                         }
                     }
                     
-                    Text(category.rawValue)
+                    Text(category.title)
                         .font(.caption)
                 }
                 .contentShape(.rect)
@@ -182,6 +182,7 @@ struct TransactionIncomeExpenseView: View {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = 2
+        formatter.locale = AppLanguage.current.locale
         
         return formatter
     }

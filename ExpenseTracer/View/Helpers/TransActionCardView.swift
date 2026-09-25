@@ -35,7 +35,7 @@ struct TransactionCardView: View {
                         .foregroundStyle(.gray)
                     
                     if showsCategory {
-                        Text(transaction.category)
+                        Text(CategoryItem(rawValue: transaction.category)?.title ?? transaction.category)
                             .font(.caption2)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 2)

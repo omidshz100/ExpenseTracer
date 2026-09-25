@@ -43,7 +43,7 @@ struct CardView: View {
                                 }
                             
                             VStack(alignment: .leading, spacing: 4) {
-                                Text(category.rawValue)
+                                Text(category.title)
                                     .font(.caption2)
                                     .foregroundStyle(.gray)
                                 

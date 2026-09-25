@@ -13,21 +13,34 @@ enum TabItem: String {
     case charts = "ChartsTab"
     case settings = "SettingsTab"
     
+    var title: String {
+        switch self {
+        case .recents:
+            return AppLanguage.text("Recents")
+        case .search:
+            return AppLanguage.text("Search")
+        case .charts:
+            return AppLanguage.text("Charts")
+        case .settings:
+            return AppLanguage.text("Settings")
+        }
+    }
+
     @ViewBuilder
     var tabContent: some View {
         switch self {
         case .recents:
             Image(systemName: "book.pages")
-            Text(self.rawValue)
+            Text(title)
         case .search:
             Image(systemName: "magnifyingglass")
-            Text(self.rawValue)
+            Text(title)
         case .charts:
             Image(systemName: "chart.line.uptrend.xyaxis")
-            Text(self.rawValue)
+            Text(title)
         case .settings:
             Image(systemName: "gear")
-            Text(self.rawValue)
+            Text(title)
         }
     }
 }

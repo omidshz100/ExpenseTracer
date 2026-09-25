@@ -57,8 +57,8 @@ struct StatsCardView: Widget {
         }
         .supportedFamilies([.systemMedium])
         .contentMarginsDisabled()
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
+        .configurationDisplayName(Text(AppLanguage.text("My Widget")))
+        .description(Text(AppLanguage.text("This is an example widget.")))
     }
 }
 

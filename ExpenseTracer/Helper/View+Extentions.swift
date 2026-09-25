@@ -33,6 +33,7 @@ extension View {
     
     func format(date: Date, format: String) -> String {
         let formatter = DateFormatter()
+        formatter.locale = AppLanguage.current.locale
         formatter.dateFormat = format
         return formatter.string(from: date)
     }
@@ -41,14 +42,23 @@ extension View {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.maximumFractionDigits = allowedDigits
+        formatter.locale = AppLanguage.current.locale
+        if let code = Locale.current.currency?.identifier {
+            formatter.currencyCode = code
+        }
         
         return formatter.string(from: .init(value: value)) ?? ""
     }
     
     var currencySymbol: String {
-        let locale = Locale.current
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = AppLanguage.current.locale
+        if let code = Locale.current.currency?.identifier {
+            formatter.currencyCode = code
+        }
         
-        return locale.currencySymbol ?? ""
+        return formatter.currencySymbol ?? Locale.current.currencySymbol ?? ""
     }
     
     func totalCalculator(_ transactions: [TransactionModel], category: CategoryItem) -> Double {

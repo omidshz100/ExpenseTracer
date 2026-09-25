@@ -45,6 +45,11 @@
 		D9CE2FA12BC473FD006EF862 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95DA0C42B307DAB008A4E8D /* Constants.swift */; };
 		D9CE2FA22BC47404006EF862 /* View+Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AC32012B333049006F7973 /* View+Extentions.swift */; };
 		D9CE2FA32BC47406006EF862 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D996D08E2B34477100EEFCE0 /* Date+Extension.swift */; };
+		A1B2C0012B500001008A4E8D /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C0022B500001008A4E8D /* AppLanguage.swift */; };
+		A1B2C0032B500001008A4E8D /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C0042B500001008A4E8D /* Localizable.xcstrings */; };
+		A1B2C0052B500001008A4E8D /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C0062B500001008A4E8D /* InfoPlist.xcstrings */; };
+		A1B2C0072B500001008A4E8D /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C0022B500001008A4E8D /* AppLanguage.swift */; };
+		A1B2C0082B500001008A4E8D /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C0042B500001008A4E8D /* Localizable.xcstrings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +111,9 @@
 		D9CE2F922BC471B3006EF862 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D9CE2F9A2BC4725B006EF862 /* StatsCardViewExtension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = StatsCardViewExtension.entitlements; sourceTree = "<group>"; };
 		D9CE2F9B2BC472D5006EF862 /* ExpenseTracer.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = ExpenseTracer.entitlements; sourceTree = "<group>"; };
+		A1B2C0022B500001008A4E8D /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
+		A1B2C0042B500001008A4E8D /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		A1B2C0062B500001008A4E8D /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +164,8 @@
 				D95DA0BF2B307AB5008A4E8D /* View */,
 				D95DA0B12B30792C008A4E8D /* ExpenseTracerApp.swift */,
 				D95DA0B32B30792C008A4E8D /* ContentView.swift */,
+				A1B2C0042B500001008A4E8D /* Localizable.xcstrings */,
+				A1B2C0062B500001008A4E8D /* InfoPlist.xcstrings */,
 				D95DA0B52B30792D008A4E8D /* Assets.xcassets */,
 				D9CE2F9B2BC472D5006EF862 /* ExpenseTracer.entitlements */,
 				D95DA0B72B30792D008A4E8D /* Preview Content */,
@@ -198,6 +208,7 @@
 			isa = PBXGroup;
 			children = (
 				D95DA0C42B307DAB008A4E8D /* Constants.swift */,
+				A1B2C0022B500001008A4E8D /* AppLanguage.swift */,
 				D9AC32012B333049006F7973 /* View+Extentions.swift */,
 				D996D08E2B34477100EEFCE0 /* Date+Extension.swift */,
 			);
@@ -312,6 +323,8 @@
 			knownRegions = (
 				en,
 				Base,
+				it,
+				fa,
 			);
 			mainGroup = D95DA0A52B30792C008A4E8D;
 			productRefGroup = D95DA0AF2B30792C008A4E8D /* Products */;
@@ -331,6 +344,8 @@
 			files = (
 				D95DA0B92B30792D008A4E8D /* Preview Assets.xcassets in Resources */,
 				D95DA0B62B30792D008A4E8D /* Assets.xcassets in Resources */,
+				A1B2C0032B500001008A4E8D /* Localizable.xcstrings in Resources */,
+				A1B2C0052B500001008A4E8D /* InfoPlist.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +354,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9CE2F912BC471B3006EF862 /* Assets.xcassets in Resources */,
+				A1B2C0082B500001008A4E8D /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -362,6 +378,7 @@
 				D95DA0C22B307AC4008A4E8D /* SplashScreen.swift in Sources */,
 				D9AC32002B30A3FD006F7973 /* ApplicationSettings.swift in Sources */,
 				D95DA0C52B307DAB008A4E8D /* Constants.swift in Sources */,
+				A1B2C0012B500001008A4E8D /* AppLanguage.swift in Sources */,
 				D9AC31FC2B30A3D2006F7973 /* SearchAmongTransActions.swift in Sources */,
 				D9AC31FA2B30A3C8006F7973 /* RecentTransactions.swift in Sources */,
 				D9AC32022B333049006F7973 /* View+Extentions.swift in Sources */,
@@ -388,6 +405,7 @@
 				D9CE2F9C2BC473C4006EF862 /* CardView.swift in Sources */,
 				D9CE2F892BC471B1006EF862 /* StatsCardViewBundle.swift in Sources */,
 				D9CE2FA12BC473FD006EF862 /* Constants.swift in Sources */,
+				A1B2C0072B500001008A4E8D /* AppLanguage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -534,7 +552,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "We need your pesmission to unlock your app.";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "We need your permission to unlock your app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -570,7 +588,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "We need your pesmission to unlock your app.";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "We need your permission to unlock your app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

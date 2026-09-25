@@ -49,7 +49,7 @@ struct GraphForTransactions: View {
                 }
                 .padding(15)
             }
-            .navigationTitle("Graphs")
+            .navigationTitle(AppLanguage.text("Graphs"))
             .background(.gray.opacity(0.15))
             .onAppear {
                 /// Creating Chart Group
@@ -57,7 +57,7 @@ struct GraphForTransactions: View {
             }
             .overlay {
                 if transactions.isEmpty {
-                    ContentUnavailableView("No Transactions Found", systemImage: "xmark.seal")
+                    ContentUnavailableView(AppLanguage.text("No Transactions Found"), systemImage: "xmark.seal")
                 }
             }
         }
@@ -70,12 +70,12 @@ struct GraphForTransactions: View {
             ForEach(chartGroups) { group in
                 ForEach(group.categories) { chart  in
                     BarMark(
-                        x: .value("Month", format(date: group.date, format: "MMM yy")),
-                        y: .value(chart.category.rawValue, chart.totalValue),
+                        x: .value(AppLanguage.text("Month"), format(date: group.date, format: "MMM yy")),
+                        y: .value(chart.category.title, chart.totalValue),
                         width: 20
                     )
-                    .position(by: .value("Category", chart.category.rawValue), axis: .horizontal)
-                    .foregroundStyle(by: .value("Category", chart.category.rawValue))
+                    .position(by: .value(AppLanguage.text("Category"), chart.category.title), axis: .horizontal)
+                    .foregroundStyle(by: .value(AppLanguage.text("Category"), chart.category.title))
                 }
             }
         }
@@ -168,7 +168,7 @@ struct ListOfExpenses: View {
                         }
                     }
                 } header: {
-                    Text("Income")
+                    Text(CategoryItem.income.title)
                         .font(.caption)
                         .foregroundStyle(.gray)
                         .hSpacingForView(.leading)
@@ -186,7 +186,7 @@ struct ListOfExpenses: View {
                         }
                     }
                 } header: {
-                    Text("Expense")
+                    Text(CategoryItem.expense.title)
                         .font(.caption)
                         .foregroundStyle(.gray)
                         .hSpacingForView(.leading)

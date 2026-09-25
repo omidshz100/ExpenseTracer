@@ -13,22 +13,40 @@ struct ApplicationSettings: View {
     /// App Lock Properties
     @AppStorage("isAppLockEnabled") private var isAppLockEnabled: Bool = false
     @AppStorage("lockWhenAppGoesBackground") private var lockWhenAppGoesBackground: Bool = false
+    @AppStorage(AppLanguage.storageKey) private var appLanguageCode = AppLanguage.resolvedCode
     var body: some View {
         NavigationStack {
             List {
-                Section("User Name") {
-                    TextField("iJustine", text: $userName)
+                Section {
+                    Picker(selection: $appLanguageCode) {
+                        ForEach(AppLanguage.allCases) { language in
+                            Text(language.nativeName)
+                                .tag(language.rawValue)
+                        }
+                    } label: {
+                        Text(AppLanguage.text("Language"))
+                    }
+                } header: {
+                    Text(AppLanguage.text("Language"))
+                }
+
+                Section {
+                    TextField(AppLanguage.text("Your name"), text: $userName)
+                } header: {
+                    Text(AppLanguage.text("User Name"))
                 }
                 
-                Section("App Lock") {
-                    Toggle("Enable App Lock", isOn: $isAppLockEnabled)
+                Section {
+                    Toggle(AppLanguage.text("Enable App Lock"), isOn: $isAppLockEnabled)
                     
                     if isAppLockEnabled {
-                        Toggle("Lock When App Goes Background", isOn: $lockWhenAppGoesBackground)
+                        Toggle(AppLanguage.text("Lock When App Goes Background"), isOn: $lockWhenAppGoesBackground)
                     }
+                } header: {
+                    Text(AppLanguage.text("App Lock"))
                 }
             }
-            .navigationTitle("Settings")
+            .navigationTitle(AppLanguage.text("Settings"))
         }
     }
 }

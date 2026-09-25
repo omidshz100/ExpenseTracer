@@ -42,7 +42,7 @@ struct LockView<Content: View>: View {
                     if (lockType == .both && !noBiometricAccess) || lockType == .biometric {
                         Group {
                             if noBiometricAccess {
-                                Text("Enable biometric authentication in Settings to unlock the view.")
+                                Text(AppLanguage.text("Enable biometric authentication in Settings to unlock the view."))
                                     .font(.callout)
                                     .multilineTextAlignment(.center)
                                     .padding(50)
@@ -53,7 +53,7 @@ struct LockView<Content: View>: View {
                                         Image(systemName: "faceid")
                                             .font(.largeTitle)
                                         
-                                        Text("Tap to Unlock")
+                                        Text(AppLanguage.text("Tap to Unlock"))
                                             .font(.caption2)
                                             .foregroundStyle(.gray)
                                     }
@@ -65,7 +65,7 @@ struct LockView<Content: View>: View {
                                     }
                                     
                                     if lockType == .both {
-                                        Text("Enter Pin")
+                                        Text(AppLanguage.text("Enter Pin"))
                                             .frame(width: 100, height: 40)
                                             .background(.ultraThinMaterial, in: .rect(cornerRadius: 10))
                                             .contentShape(.rect)
@@ -111,7 +111,7 @@ struct LockView<Content: View>: View {
             
             if isBiometricAvailable && lockType != .number {
                 /// Requesting Biometric Unlock
-                if let result = try? await context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Unlock the View"), result {
+                if let result = try? await context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: AppLanguage.text("Unlock the View")), result {
                     print("Unlocked")
                     withAnimation(.snappy, completionCriteria: .logicallyComplete) {
                         isUnlocked = true
@@ -137,7 +137,7 @@ struct LockView<Content: View>: View {
     @ViewBuilder
     private func NumberPadPinView() -> some View {
         VStack(spacing: 15) {
-            Text("Enter Pin")
+            Text(AppLanguage.text("Enter Pin"))
                 .font(.title.bold())
                 .frame(maxWidth: .infinity)
                 .overlay(alignment: .leading) {
@@ -190,7 +190,7 @@ struct LockView<Content: View>: View {
             })
             .padding(.top, 15)
             .overlay(alignment: .bottomTrailing, content: {
-                Button("Forgot Pin?", action: forgotPin)
+                Button(AppLanguage.text("Forgot Pin?"), action: forgotPin)
                     .foregroundStyle(.white)
                     .offset(y: 40)
             })
